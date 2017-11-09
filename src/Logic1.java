@@ -1,6 +1,8 @@
+import maps.EasyMap;
+
 public class Logic1 {
 
     public static void main(String[] args) {
-	// write your code here
+        new SinglePoint(EasyMap.NWORLD1.value()).run();
     }
 }

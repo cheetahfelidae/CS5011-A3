@@ -42,4 +42,8 @@ public enum EasyMap {
     EasyMap(int[][] map) {
         this.map = map;
     }
+
+    public int[][] value(){
+        return map;
+    }
 }
