@@ -1,5 +1,5 @@
 public class Cell {
-    public static final String UNCOVERED = "";
+    public static final String UNCOVERED = "-";
     public static final String MARKED_NETTLE = "N";
 
     private int x, y;

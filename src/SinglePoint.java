@@ -51,12 +51,13 @@ public class SinglePoint {
         int x = cell.get_x(), y = cell.get_y();
 
         for (int i = x - 1; i <= x + 1; i++) {
-            for (int j = x - 1; j <= y + 1; j++) {
-                if (is_legal_move(i, j) && i != x && j != y) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (is_legal_move(i, j)) {
                     map[i][j].set_value(Integer.toString(answer_map[i][j]));
                 }
             }
         }
+        System.out.println();
     }
 
     /**
@@ -98,6 +99,13 @@ public class SinglePoint {
         }
     }
 
+    public static void print_hyphens(int num) {
+        for (int i = 0; i < num; i++) {
+            System.out.print("-");
+        }
+        System.out.println();
+    }
+
     /**
      * This method is used to clean screen to be able to render a motion.
      */
@@ -127,6 +135,7 @@ public class SinglePoint {
             }
             System.out.println();
         }
+        print_hyphens(map.length * 2);
         sleep(1000);
     }
 
@@ -141,26 +150,24 @@ public class SinglePoint {
      */
     public void run() {
 
-        for (int i = 0; i < answer_map.length; i++) {
-            for (int j = 0; j < answer_map.length; j++) {
 
-                map[i][j].set_value(Integer.toString(answer_map[i][j])); // 2
+        int i = 0, j = 0;
 
-                if (!map[i][j].get_value().equals("-1")) {
-                    if (all_free_neighbours(map[i][j])) {// 3.1
-                        uncover_neighbors(map[i][j]);
-                    }
+        map[i][j].set_value(Integer.toString(answer_map[i][j])); // 2
 
-                    if (all_marked_neighbours(map[i][j])) {// 3.2
-                        mark_nettle(map[i][j]);
-                    }
-                } else {
-                    System.out.println("Game is over!! ");
-                    return;
-                }
-
-                print();
+        if (!map[i][j].get_value().equals("-1")) {
+            if (all_free_neighbours(map[i][j])) {// 3.1
+                uncover_neighbors(map[i][j]);
             }
+
+            if (all_marked_neighbours(map[i][j])) {// 3.2
+                mark_nettle(map[i][j]);
+            }
+        } else {
+            System.out.println("Game is over!! ");
+            return;
         }
+
+        print();
     }
 }
