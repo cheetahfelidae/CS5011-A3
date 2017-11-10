@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class SinglePoint {
     private int[][] answer_map;
@@ -91,7 +93,7 @@ public class SinglePoint {
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = x - 1; j <= y + 1; j++) {
                 if (is_legal_move(i, j) && i != x && j != y) {
-                    if (map[i][j].equals(Cell.UNCOVERED)) {
+                    if (map[i][j].get_value().equals(Cell.UNCOVERED)) {
                         map[i][j].set_value(Integer.toString(answer_map[i][j]));
                     }
                 }
@@ -136,7 +138,32 @@ public class SinglePoint {
             System.out.println();
         }
         print_hyphens(map.length * 2);
-        sleep(1000);
+        sleep(100);
+    }
+
+    private ArrayList<Cell> get_uncovered() {
+        ArrayList<Cell> uncovered = new ArrayList<>();
+
+        for (Cell[] row : map) {
+            for (Cell column : row) {
+                if (column.get_value().equals(Cell.UNCOVERED)) {
+                    uncovered.add(column);
+                }
+            }
+        }
+
+        return uncovered;
+    }
+
+
+    private Integer[] get_random(int size) {
+        Integer[] randoms = new Integer[size];
+        for (int i = 0; i < randoms.length; i++) {
+            randoms[i] = i;
+        }
+        Collections.shuffle(Arrays.asList(randoms));
+
+        return randoms;
     }
 
     /**
@@ -150,24 +177,44 @@ public class SinglePoint {
      */
     public void run() {
 
+        map[0][0].set_value(Integer.toString(answer_map[0][0]));
 
-        int i = 0, j = 0;
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[0].length; j++) {
 
-        map[i][j].set_value(Integer.toString(answer_map[i][j])); // 2
+                if (!map[i][j].get_value().equals(Cell.UNCOVERED)) {
 
-        if (!map[i][j].get_value().equals("-1")) {
-            if (all_free_neighbours(map[i][j])) {// 3.1
-                uncover_neighbors(map[i][j]);
+                    if (all_free_neighbours(map[i][j])) {// 3.1
+                        uncover_neighbors(map[i][j]);
+                    }
+
+                    if (all_marked_neighbours(map[i][j])) {// 3.2
+                        mark_nettle(map[i][j]);
+                    }
+
+                }
+
+                print();
             }
-
-            if (all_marked_neighbours(map[i][j])) {// 3.2
-                mark_nettle(map[i][j]);
-            }
-        } else {
-            System.out.println("Game is over!! ");
-            return;
         }
 
-        print();
+        ArrayList<Cell> uncovered = get_uncovered();
+
+        Integer[] randoms = get_random(uncovered.size());
+
+        for (int i = 0; i < uncovered.size(); i++) {
+            Cell cell = uncovered.get(randoms[i]);
+            int x = cell.get_x(), y = cell.get_y();
+
+            cell.set_value(Integer.toString(answer_map[x][y]));
+
+            print();
+
+            if (answer_map[x][y] == -1) {
+                System.out.println("Game is over!! ");
+                break;
+            }
+        }
+
     }
 }
