@@ -27,4 +27,16 @@ public class Cell {
     public String get_value() {
         return value;
     }
+
+    public boolean is_border(Cell cell) {
+        int x = Math.abs(this.x - cell.get_x());
+        int y = Math.abs(this.y - cell.get_y());
+
+        return (x == 0 && y == 1) || (x == 1 && y == 0);
+    }
+
+    @Override
+    public String toString() {
+        return "(" + x + "," + y + ")";
+    }
 }

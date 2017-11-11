@@ -13,8 +13,11 @@ public class Logic1 {
         SPS sps = new SPS(map, EasyMap.NWORLD1.value());
         sps.run();
 
-        RGS rgs = new RGS(map, EasyMap.NWORLD1.value());
-        rgs.run(sps.get_uncovered());
+        EES ees = new EES(map, answer_map);
+        ees.run();
+
+        //        RGS rgs = new RGS(map, EasyMap.NWORLD1.value());
+//        rgs.run(Utility.find_uncovered(map));
     }
 
     public static void main(String[] args) {

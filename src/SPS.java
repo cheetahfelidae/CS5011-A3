@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class SPS {
     private int[][] answer_map;
     private Cell[][] map;
@@ -29,28 +27,16 @@ public class SPS {
         return count == Integer.parseInt(cell.get_value());
     }
 
-    /**
-     * Checks if the moving to a particular cell in the answer_map is legal (i.e. array out of bound).
-     *
-     * @param x
-     * @param y
-     * @return
-     */
-    private boolean is_legal_move(int x, int y) {
-        return x >= 0 && x < answer_map.length && y >= 0 && y < answer_map[0].length;
-    }
-
     private void uncover_neighbors(Cell cell) {
         int x = cell.get_x(), y = cell.get_y();
 
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
-                if (is_legal_move(i, j)) {
+                if (Utility.is_legal_move(i, j, answer_map)) {
                     map[i][j].set_value(Integer.toString(answer_map[i][j]));
                 }
             }
         }
-        System.out.println();
     }
 
     /**
@@ -83,27 +69,13 @@ public class SPS {
 
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = x - 1; j <= y + 1; j++) {
-                if (is_legal_move(i, j) && i != x && j != y) {
+                if (Utility.is_legal_move(i, j, answer_map) && i != x && j != y) {
                     if (map[i][j].get_value().equals(Cell.UNCOVERED)) {
                         map[i][j].set_value(Integer.toString(answer_map[i][j]));
                     }
                 }
             }
         }
-    }
-
-    public ArrayList<Cell> get_uncovered() {
-        ArrayList<Cell> uncovered = new ArrayList<>();
-
-        for (Cell[] row : map) {
-            for (Cell column : row) {
-                if (column.get_value().equals(Cell.UNCOVERED)) {
-                    uncovered.add(column);
-                }
-            }
-        }
-
-        return uncovered;
     }
 
     /**
