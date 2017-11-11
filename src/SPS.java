@@ -1,21 +1,12 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
-public class SinglePoint {
+public class SPS {
     private int[][] answer_map;
     private Cell[][] map;
 
-    SinglePoint(int[][] answer_map) {
+    SPS(Cell[][] map, int[][] answer_map) {
+        this.map = map;
         this.answer_map = answer_map;
-
-        map = new Cell[answer_map.length][answer_map[0].length];
-
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                map[i][j] = new Cell(i, j);
-            }
-        }
     }
 
     /**
@@ -101,47 +92,7 @@ public class SinglePoint {
         }
     }
 
-    public static void print_hyphens(int num) {
-        for (int i = 0; i < num; i++) {
-            System.out.print("-");
-        }
-        System.out.println();
-    }
-
-    /**
-     * This method is used to clean screen to be able to render a motion.
-     */
-    public static void clear_screen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
-    /**
-     * This makes the programme sleep for a specific amount of time.
-     *
-     * @param millis the number of milli seconds of the thread sleep.
-     */
-    public static void sleep(int millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void print() {
-        clear_screen();
-        for (Cell[] row : map) {
-            for (Cell column : row) {
-                System.out.print(column.get_value() + " ");
-            }
-            System.out.println();
-        }
-        print_hyphens(map.length * 2);
-        sleep(100);
-    }
-
-    private ArrayList<Cell> get_uncovered() {
+    public ArrayList<Cell> get_uncovered() {
         ArrayList<Cell> uncovered = new ArrayList<>();
 
         for (Cell[] row : map) {
@@ -153,17 +104,6 @@ public class SinglePoint {
         }
 
         return uncovered;
-    }
-
-
-    private Integer[] get_random(int size) {
-        Integer[] randoms = new Integer[size];
-        for (int i = 0; i < randoms.length; i++) {
-            randoms[i] = i;
-        }
-        Collections.shuffle(Arrays.asList(randoms));
-
-        return randoms;
     }
 
     /**
@@ -194,25 +134,7 @@ public class SinglePoint {
 
                 }
 
-                print();
-            }
-        }
-
-        ArrayList<Cell> uncovered = get_uncovered();
-
-        Integer[] randoms = get_random(uncovered.size());
-
-        for (int i = 0; i < uncovered.size(); i++) {
-            Cell cell = uncovered.get(randoms[i]);
-            int x = cell.get_x(), y = cell.get_y();
-
-            cell.set_value(Integer.toString(answer_map[x][y]));
-
-            print();
-
-            if (answer_map[x][y] == -1) {
-                System.out.println("Game is over!! ");
-                break;
+                Printer.print(map);
             }
         }
 
