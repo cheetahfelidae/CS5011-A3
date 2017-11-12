@@ -21,8 +21,16 @@ public class RGS {
         return randoms;
     }
 
-    public void run(ArrayList<Cell> uncovered) {
 
+    /**
+     * Maintain a list of covered cells Pick a random one [x,y]
+     * Probe [x,y]
+     * if [x,y] is a nettle (= −1) - game over
+     * if [x,y] has value > −1 - continue
+     * Repeat until game won or lost
+     */
+    public void run() {
+        ArrayList<Cell> uncovered = Utility.find_uncovered(map);
         Integer[] randoms = get_random(uncovered.size());
 
         for (int i = 0; i < uncovered.size(); i++) {

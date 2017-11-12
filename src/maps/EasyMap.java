@@ -43,7 +43,25 @@ public enum EasyMap {
         this.map = map;
     }
 
-    public int[][] value(){
+    private int[][] value() {
         return map;
+    }
+
+    public static int[][] get_map(int num) {
+        switch (num) {
+            case 1:
+                return NWORLD1.value();
+            case 2:
+                return NWORLD2.value();
+            case 3:
+                return NWORLD3.value();
+            case 4:
+                return NWORLD4.value();
+            case 5:
+                return NWORLD5.value();
+            default:
+        }
+
+        return null;
     }
 }

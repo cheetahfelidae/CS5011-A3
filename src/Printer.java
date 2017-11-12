@@ -1,4 +1,9 @@
+import com.sun.deploy.util.StringUtils;
+
 public class Printer {
+    private static String SPACE = " ";
+    private static int round = 0;
+
     public static void print_hyphens(int num) {
         for (int i = 0; i < num; i++) {
             System.out.print("-");
@@ -29,13 +34,19 @@ public class Printer {
 
     public static void print(Cell[][] map) {
         clear_screen();
+
+        print_hyphens(map.length * 3);
+        System.out.println("Round: " + round++);
+        print_hyphens(map.length * 3);
         for (Cell[] row : map) {
             for (Cell column : row) {
-                System.out.print(column.get_value() + " ");
+                String value = column.get_value();
+                System.out.print(value.length() == 2 ? value + SPACE : SPACE + value + SPACE);
             }
             System.out.println();
         }
-        print_hyphens(map.length * 2);
+        print_hyphens(map.length * 3);
+
         sleep(100);
     }
 }
