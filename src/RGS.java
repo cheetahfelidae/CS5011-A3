@@ -4,10 +4,10 @@ import java.util.Collections;
 
 public class RGS {
     private int[][] answer_map;
-    private Cell[][] map;
+    private Cell[][] uncovered_map;
 
-    RGS(Cell[][] map, int[][] answer_map) {
-        this.map = map;
+    RGS(Cell[][] uncovered_map, int[][] answer_map) {
+        this.uncovered_map = uncovered_map;
         this.answer_map = answer_map;
     }
 
@@ -30,7 +30,11 @@ public class RGS {
      * Repeat until game won or lost
      */
     public void run() {
-        ArrayList<Cell> uncovered = Utility.find_uncovered(map);
+        Printer.print_asterisks(uncovered_map.length * 6);
+        System.out.println("Random Guess Strategy");
+        Printer.print_asterisks(uncovered_map.length * 6);
+
+        ArrayList<Cell> uncovered = Utility.find_uncovered(uncovered_map);
         Integer[] randoms = get_random(uncovered.size());
 
         for (int i = 0; i < uncovered.size(); i++) {
@@ -39,7 +43,7 @@ public class RGS {
 
             cell.set_value(Integer.toString(answer_map[x][y]));
 
-            Printer.print(map);
+            Printer.print(uncovered_map);
 
             if (answer_map[x][y] == -1) {
                 System.out.println("Game is over!! ");

@@ -1,12 +1,18 @@
 import com.sun.deploy.util.StringUtils;
 
 public class Printer {
-    private static String SPACE = " ";
     private static int round = 0;
 
     public static void print_hyphens(int num) {
         for (int i = 0; i < num; i++) {
             System.out.print("-");
+        }
+        System.out.println();
+    }
+
+    public static void print_asterisks(int num) {
+        for (int i = 0; i < num; i++) {
+            System.out.print("*");
         }
         System.out.println();
     }
@@ -33,6 +39,8 @@ public class Printer {
     }
 
     public static void print(Cell[][] map) {
+        final String space = " ";
+
         clear_screen();
 
         print_hyphens(map.length * 3);
@@ -41,12 +49,12 @@ public class Printer {
         for (Cell[] row : map) {
             for (Cell column : row) {
                 String value = column.get_value();
-                System.out.print(value.length() == 2 ? value + SPACE : SPACE + value + SPACE);
+                System.out.print(value.length() == 2 ? value + space : space + value + space);
             }
             System.out.println();
         }
         print_hyphens(map.length * 3);
 
-        sleep(100);
+        sleep(0);
     }
 }

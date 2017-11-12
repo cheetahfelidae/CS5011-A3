@@ -3,10 +3,10 @@ import java.util.Collections;
 
 public class EES {
     private int[][] answer_map;
-    private Cell[][] map;
+    private Cell[][] uncovered_map;
 
-    EES(Cell[][] map, int[][] answer_map) {
-        this.map = map;
+    EES(Cell[][] uncovered_map, int[][] answer_map) {
+        this.uncovered_map = uncovered_map;
         this.answer_map = answer_map;
     }
 
@@ -16,7 +16,7 @@ public class EES {
 
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
-                if (Utility.is_legal_move(i, j, answer_map) && map[i][j].get_value().equals(Cell.MARKED_NETTLE)) {
+                if (Utility.is_legal_move(i, j, answer_map) && uncovered_map[i][j].get_value().equals(Cell.MARKED_NETTLE)) {
                     count++;
                 }
             }
@@ -55,8 +55,8 @@ public class EES {
 
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
-                if (Utility.is_legal_move(i, j, answer_map) && map[i][j].get_value().equals(Cell.UNCOVERED)) {
-                    uncovered.add(map[i][j]);
+                if (Utility.is_legal_move(i, j, answer_map) && uncovered_map[i][j].get_value().equals(Cell.UNCOVERED)) {
+                    uncovered.add(uncovered_map[i][j]);
                 }
             }
         }
@@ -79,12 +79,12 @@ public class EES {
 
     private ArrayList<BorderedPair> find_pair() {
         ArrayList<Cell> bordered_cells = new ArrayList<>();
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[0].length; j++) {
+        for (int i = 0; i < uncovered_map.length; i++) {
+            for (int j = 0; j < uncovered_map[0].length; j++) {
 
-                if (!map[i][j].get_value().equals(Cell.UNCOVERED) && !map[i][j].get_value().equals(Cell.MARKED_NETTLE)) {
-                    if (Integer.parseInt(map[i][j].get_value()) > 0) {
-                        bordered_cells.add(map[i][j]);
+                if (!uncovered_map[i][j].get_value().equals(Cell.UNCOVERED) && !uncovered_map[i][j].get_value().equals(Cell.MARKED_NETTLE)) {
+                    if (Integer.parseInt(uncovered_map[i][j].get_value()) > 0) {
+                        bordered_cells.add(uncovered_map[i][j]);
                     }
                 }
 
@@ -126,6 +126,10 @@ public class EES {
      * otherwise abandon.
      */
     public void run() {
+        Printer.print_asterisks(uncovered_map.length * 6);
+        System.out.println("Easy Equation Strategy");
+        Printer.print_asterisks(uncovered_map.length * 6);
+
         ArrayList<BorderedPair> pairs = find_pair();
         Collections.reverse(pairs);// make the order of the bordered pairs running from the bottom to the top.
 
@@ -149,7 +153,8 @@ public class EES {
 
             }
 
-            Printer.print(map);
+            System.out.println(cell1 + " " + cell2);
+            Printer.print(uncovered_map);
         }
 
     }

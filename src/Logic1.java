@@ -21,8 +21,8 @@ public class Logic1 {
         SPS sps = new SPS(uncovered_map, answer_map);
         sps.run();
 
-        RGS rgs = new RGS(uncovered_map, answer_map);
-        rgs.run();
+//        RGS rgs = new RGS(uncovered_map, answer_map);
+//        rgs.run();
     }
 
     public static void main(String[] args) {
