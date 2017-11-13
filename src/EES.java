@@ -126,9 +126,7 @@ public class EES {
      * otherwise abandon.
      */
     public void run() {
-        Printer.print_asterisks(uncovered_map.length * 6);
-        System.out.println("Easy Equation Strategy");
-        Printer.print_asterisks(uncovered_map.length * 6);
+        Printer.set_algorithm(Printer.EES);
 
         ArrayList<BorderedPair> pairs = find_pair();
         Collections.reverse(pairs);// make the order of the bordered pairs running from the bottom to the top.

@@ -30,9 +30,7 @@ public class RGS {
      * Repeat until game won or lost
      */
     public void run() {
-        Printer.print_asterisks(uncovered_map.length * 6);
-        System.out.println("Random Guess Strategy");
-        Printer.print_asterisks(uncovered_map.length * 6);
+        Printer.set_algorithm(Printer.RGS);
 
         ArrayList<Cell> uncovered = Utility.find_uncovered(uncovered_map);
         Integer[] randoms = get_random(uncovered.size());

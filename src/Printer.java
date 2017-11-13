@@ -1,7 +1,14 @@
-import com.sun.deploy.util.StringUtils;
-
 public class Printer {
-    private static int round = 0;
+    public static final String SPS = "Single Point Strategy";
+    public static final String RGS = "Random Guess Strategy";
+    public static final String EES = "Easy Equation Strategy";
+
+    private static String algorithm;
+    private static int round = 1;
+
+    public static void set_algorithm(String name) {
+        algorithm = name;
+    }
 
     public static void print_hyphens(int num) {
         for (int i = 0; i < num; i++) {
@@ -44,6 +51,7 @@ public class Printer {
         clear_screen();
 
         print_hyphens(map.length * 3);
+        System.out.println("Algorithm: " + algorithm);
         System.out.println("Round: " + round++);
         print_hyphens(map.length * 3);
         for (Cell[] row : map) {
