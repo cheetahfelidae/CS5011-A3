@@ -111,12 +111,9 @@ public class SPS {
                 if (!uncovered_map[i][j].get_value().equals(Cell.UNCOVERED)) {
 
                     if (all_free_neighbours(uncovered_map[i][j])) {
-                        System.out.println("Hey");
                         uncover_neighbors(uncovered_map[i][j]);
                     }
-
                     if (all_marked_neighbours(uncovered_map[i][j])) {
-                        System.out.println("Yo");
                         mark_nettle_neighbours(uncovered_map[i][j]);
                     }
 
