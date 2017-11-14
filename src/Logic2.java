@@ -40,7 +40,7 @@ public class Logic2 {
         if (args.length == 1) {
             (new Logic2()).run(EasyMap.get_map(Integer.parseInt(args[0])));
         } else {
-            System.out.println("usage: java Logic1 <map_no>");
+            System.out.println("usage: java Logic2 <map_no>");
         }
     }
 }

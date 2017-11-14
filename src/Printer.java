@@ -2,6 +2,7 @@ public class Printer {
     public static final String SPS = "Single Point Strategy";
     public static final String RGS = "Random Guess Strategy";
     public static final String EES = "Easy Equation Strategy";
+    public static final String DPLL = "Davis-Putnam-Logemann-Loveland Algorithm";
 
     private static String algorithm;
     private static int round = 1;

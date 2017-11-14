@@ -32,7 +32,7 @@ public class RGS {
     public void run() {
         Printer.set_algorithm(Printer.RGS);
 
-        ArrayList<Cell> uncovered = Utility.find_uncovered(uncovered_map);
+        ArrayList<Cell> uncovered = Utility.find_uncovered_cells(uncovered_map);
         Integer[] randoms = get_random(uncovered.size());
 
         for (int i = 0; i < uncovered.size(); i++) {

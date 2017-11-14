@@ -21,6 +21,8 @@ public class Logic3 {
         SPS sps = new SPS(uncovered_map, answer_map);
         sps.run();
 
+        DLS dls = new DLS(uncovered_map, answer_map);
+        dls.run();
 
 //        RGS rgs = new RGS(uncovered_map, answer_map);
 //        rgs.run();
@@ -30,7 +32,7 @@ public class Logic3 {
         if (args.length == 1) {
             (new Logic3()).run(EasyMap.get_map(Integer.parseInt(args[0])));
         } else {
-            System.out.println("usage: java Logic1 <map_no>");
+            System.out.println("usage: java Logic3 <map_no>");
         }
     }
 }

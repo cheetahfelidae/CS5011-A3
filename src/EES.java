@@ -41,29 +41,6 @@ public class EES {
                 - (Integer.parseInt(cell2.get_value()) - get_num_marked_nettle_neighbours(cell2)));
     }
 
-    /**
-     * For each pair [x,y][k,j].
-     * Find S[x,y] all uncovered/unmarked neighbours of [x,y].
-     * Find S[k,j] all uncovered/unmarked neighbours of [k, j].
-     *
-     * @param cell
-     * @return
-     */
-    private ArrayList<Cell> find_uncovered(Cell cell) {
-        ArrayList<Cell> uncovered = new ArrayList<>();
-        int x = cell.get_x(), y = cell.get_y();
-
-        for (int i = x - 1; i <= x + 1; i++) {
-            for (int j = y - 1; j <= y + 1; j++) {
-                if (Utility.is_legal_move(i, j, answer_map) && uncovered_map[i][j].get_value().equals(Cell.UNCOVERED)) {
-                    uncovered.add(uncovered_map[i][j]);
-                }
-            }
-        }
-
-        return uncovered;
-    }
-
     private ArrayList<Cell> find_subtraction(ArrayList<Cell> list1, ArrayList<Cell> list2) {
 
         ArrayList<Cell> union = new ArrayList<>(list1);
@@ -133,8 +110,8 @@ public class EES {
 
         for (BorderedPair pair : pairs) {
             Cell cell1 = pair.getCell1(), cell2 = pair.getCell2();
-            ArrayList<Cell> uncovered_cells1 = find_uncovered(cell1),
-                    uncovered_cells2 = find_uncovered(cell2);
+            ArrayList<Cell> uncovered_cells1 = Utility.find_uncovered_neighbours(cell1, uncovered_map, answer_map),
+                    uncovered_cells2 = Utility.find_uncovered_neighbours(cell2, uncovered_map, answer_map);
 
             if (uncovered_cells2.containsAll(uncovered_cells1)) { // return true if uncovered_cell1 is a subset of uncovered_cell2.
                 ArrayList<Cell> intersection = find_subtraction(uncovered_cells1, uncovered_cells2);
