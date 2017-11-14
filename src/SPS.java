@@ -14,20 +14,8 @@ public class SPS {
      * @return
      */
     private boolean all_free_neighbours(Cell cell) {
-        int count = 0;
-        int x = cell.get_x(), y = cell.get_y();
-
-        for (int i = x - 1; i <= x + 1; i++) {
-            for (int j = y - 1; j <= y + 1; j++) {
-                if (Utility.is_legal_move(i, j, answer_map)
-                        && uncovered_map[i][j].get_value().equals(Cell.MARKED_NETTLE)) {
-                    count++;
-                }
-            }
-        }
-
         String value = cell.get_value();
-        return Utility.is_numeric(value) && count == Integer.parseInt(value);
+        return Utility.is_numeric(value) && Utility.find_num_marked_nettle(cell, uncovered_map, answer_map) == Integer.parseInt(value);
     }
 
     private void uncover_neighbors(Cell cell) {

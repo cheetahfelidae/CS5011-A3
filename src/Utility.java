@@ -76,4 +76,20 @@ public class Utility {
 
         return uncovered;
     }
+
+    public static int find_num_marked_nettle(Cell cell, Cell[][] uncovered_map, int[][] answer_map) {
+        int count = 0;
+        int x = cell.get_x(), y = cell.get_y();
+
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (Utility.is_legal_move(i, j, answer_map)
+                        && uncovered_map[i][j].get_value().equals(Cell.MARKED_NETTLE)) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
 }
