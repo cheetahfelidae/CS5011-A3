@@ -20,7 +20,7 @@ public class Logic2 {
      * @param answer_map
      */
     private void run(int[][] answer_map) {
-        Cell[][] uncovered_map = Utility.get_uncovered_map(answer_map);
+        Cell[][] uncovered_map = Utility.create_uncovered_map(answer_map);
 
         SPS sps = new SPS(uncovered_map, answer_map);
         sps.run();

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Utility {
 
-    public static Cell[][] get_uncovered_map(int[][] answer_map) {
+    public static Cell[][] create_uncovered_map(int[][] answer_map) {
         Cell[][] map = new Cell[answer_map.length][answer_map[0].length];
 
         for (int i = 0; i < map.length; i++) {
