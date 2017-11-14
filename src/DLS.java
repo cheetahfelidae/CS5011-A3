@@ -6,8 +6,6 @@ import core.util.Util;
 import java.util.ArrayList;
 
 public class DLS {
-    private DPLLSatisfiable dpll;
-
     private int[][] answer_map;
     private Cell[][] uncovered_map;
 
@@ -32,8 +30,6 @@ public class DLS {
     DLS(Cell[][] uncovered_map, int[][] answer_map) {
         this.uncovered_map = uncovered_map;
         this.answer_map = answer_map;
-
-        dpll = new DPLLSatisfiable();
     }
 
     //    public static void main(String[] args) {
@@ -76,6 +72,8 @@ public class DLS {
     private boolean displayDPLLSatisfiableStatus(String query) {
         PLParser parser = new PLParser();
         Sentence sent = parser.parse(query);
+        DPLLSatisfiable dpll = new DPLLSatisfiable();
+
         if (dpll.dpllSatisfiable(sent)) {
 //            System.out.println(query + " is satisfiable");
             return true;
@@ -148,6 +146,7 @@ public class DLS {
         }
 
         System.out.println(KBU);
+        System.out.println();
         ArrayList<Cell> uncovered_cells = Utility.find_uncovered_cells(uncovered_map);
 
         for (Cell cell : uncovered_cells) {
@@ -158,6 +157,7 @@ public class DLS {
             } else {
                 System.out.println("No");
             }
+            System.out.println();
         }
     }
 }
