@@ -55,11 +55,43 @@ public enum MediumMap {
             {1, -1, -1, 2, 1, 1, 2, -1, 2},
             {2, 3, 4, -1, 1, 0, 1, 1, 1},
             {1, -1, 2, 1, 1, 0, 0, 0, 0},
-    });
+    }),
+    NUM_NETTLES(20);
 
     private int[][] map;
+    private int num_nettles;
 
     MediumMap(int[][] map) {
         this.map = map;
+    }
+
+    MediumMap(int num_nettles) {
+        this.num_nettles = num_nettles;
+    }
+
+    private int[][] value() {
+        return map;
+    }
+
+    public int get_int() {
+        return num_nettles;
+    }
+
+    public static int[][] get_map(int num) {
+        switch (num) {
+            case 1:
+                return NWORLD1.value();
+            case 2:
+                return NWORLD2.value();
+            case 3:
+                return NWORLD3.value();
+            case 4:
+                return NWORLD4.value();
+            case 5:
+                return NWORLD5.value();
+            default:
+        }
+
+        return null;
     }
 }

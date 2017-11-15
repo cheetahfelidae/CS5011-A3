@@ -3,6 +3,10 @@ public class Cell {
     public static final String MARKED_NETTLE = "N";
 
     private int x, y;
+    /**
+     * Used to hold a knowledge base indicating the cell is yet to be probed (-)
+     * or is already uncovered (number) or is marked as a nettle.
+     */
     private String value;
 
     Cell(int x, int y) {

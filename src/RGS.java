@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+/**
+ * This class is used to randomly select a cell to probe and identify whether a nettle is present in the selected cell.
+ */
 public class RGS {
     private int[][] answer_map;
     private Cell[][] uncovered_map;
@@ -41,12 +44,18 @@ public class RGS {
 
             cell.set_value(Integer.toString(answer_map[x][y]));
 
-            Printer.print(uncovered_map);
+            Printer.set_position_name(String.format("(%d,%d)", x, y));
 
             if (answer_map[x][y] == -1) {
-                System.out.println("Game is over!! ");
+                Printer.set_game_result(Printer.GAME_LOST);
+                Printer.print(uncovered_map);
                 break;
+            } else if (i == uncovered.size() - 1) {
+                Printer.set_game_result(Printer.GAME_WON);
             }
+
+            Printer.print(uncovered_map);
         }
+
     }
 }

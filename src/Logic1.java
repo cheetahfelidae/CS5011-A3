@@ -1,4 +1,6 @@
 import maps.EasyMap;
+import maps.HardMap;
+import maps.MediumMap;
 
 /**
  * The single point strategy (SPS + RGS).
@@ -18,18 +20,34 @@ public class Logic1 {
     private void run(int[][] answer_map) {
         Cell[][] uncovered_map = Utility.create_uncovered_map(answer_map);
 
-        SPS sps = new SPS(uncovered_map, answer_map);
-        sps.run();
+        new SPS(uncovered_map, answer_map).run();
 
-//        RGS rgs = new RGS(uncovered_map, answer_map);
-//        rgs.run();
+        new RGS(uncovered_map, answer_map).run();
     }
 
     public static void main(String[] args) {
-        if (args.length == 1) {
-            (new Logic1()).run(EasyMap.get_map(Integer.parseInt(args[0])));
-        } else {
-            System.out.println("usage: java Logic1 <map_no>");
+        try {
+            Logic1 logic1 = new Logic1();
+            int level = Integer.parseInt(args[0]),
+                    map_no = Integer.parseInt(args[1]);
+
+            Printer.set_frame_delay(Integer.parseInt(args[2]));
+
+            switch (level) {
+                case 1:
+                    logic1.run(EasyMap.get_map(map_no));
+                    break;
+                case 2:
+                    logic1.run(MediumMap.get_map(map_no));
+                    break;
+                case 3:
+                    logic1.run(HardMap.get_map(map_no));
+                    break;
+                default:
+                    System.out.printf("MAP LEVEL %d NOT EXIST", level);
+            }
+        } catch (Exception e) {
+            System.out.println("usage: java Logic1 <level> <map_no> <delay>");
         }
     }
 }

@@ -1,4 +1,6 @@
 import maps.EasyMap;
+import maps.HardMap;
+import maps.MediumMap;
 
 /**
  * (RGS + SPS + EES).
@@ -32,15 +34,33 @@ public class Logic2 {
 
         ees.run();
 
-//        RGS rgs = new RGS(uncovered_map, answer_map);
-//        rgs.run();
+        RGS rgs = new RGS(uncovered_map, answer_map);
+        rgs.run();
     }
 
     public static void main(String[] args) {
-        if (args.length == 1) {
-            (new Logic2()).run(EasyMap.get_map(Integer.parseInt(args[0])));
-        } else {
-            System.out.println("usage: java Logic2 <map_no>");
+        try {
+            Logic2 logic2 = new Logic2();
+            int level = Integer.parseInt(args[0]),
+                    map_no = Integer.parseInt(args[1]);
+
+            Printer.set_frame_delay(Integer.parseInt(args[2]));
+
+            switch (level) {
+                case 1:
+                    logic2.run(EasyMap.get_map(map_no));
+                    break;
+                case 2:
+                    logic2.run(MediumMap.get_map(map_no));
+                    break;
+                case 3:
+                    logic2.run(HardMap.get_map(map_no));
+                    break;
+                default:
+                    System.out.printf("MAP LEVEL %d NOT EXIST", level);
+            }
+        } catch (Exception e) {
+            System.out.println("usage: java Logic2 <level> <map_no> <delay>");
         }
     }
 }

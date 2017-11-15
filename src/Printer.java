@@ -3,12 +3,30 @@ public class Printer {
     public static final String RGS = "Random Guess Strategy";
     public static final String EES = "Easy Equation Strategy";
     public static final String DPLL = "Davis-Putnam-Logemann-Loveland Algorithm";
+    public static final String GAME_LOST = "Found a nettle: the game is over!!";
+    public static final String GAME_WON = "All but marked-nettle cells are uncovered without finding a nettle: the agent wins the game!!";
 
+    private static int delay;
     private static String algorithm;
     private static int round = 1;
+    private static String position_name;
+    private static int random_count = 1;
+    private static String game_result = "";
 
-    public static void set_algorithm(String name) {
-        algorithm = name;
+    public static void set_frame_delay(int delay) {
+        Printer.delay = delay;
+    }
+
+    public static void set_algorithm(String algorithm) {
+        Printer.algorithm = algorithm;
+    }
+
+    public static void set_position_name(String position_name) {
+        Printer.position_name = position_name;
+    }
+
+    public static void set_game_result(String game_result) {
+        Printer.game_result = game_result;
     }
 
     public static void print_hyphens(int num) {
@@ -46,14 +64,28 @@ public class Printer {
         }
     }
 
+    /**
+     * Used at each move of the position, a map will be rendered indicating the action of the agent or the state of the game;
+     * e.g revealing (x,y) for uncovering a cell in [x,y] coordinates,
+     * marking (x,y) for marking the presence of a nettle in [x,y],
+     * game won or game lost.
+     *
+     * @param map
+     */
     public static void print(Cell[][] map) {
         final String space = " ";
 
         clear_screen();
 
-        print_hyphens(map.length * 3);
+        print_asterisks(map.length * 7);
+
         System.out.println("Algorithm: " + algorithm);
         System.out.println("Round: " + round++);
+        System.out.println("Current Position: " + position_name);
+        if (algorithm.equals(RGS)) {
+            System.out.println("#Random: " + random_count++);
+        }
+
         print_hyphens(map.length * 3);
         for (Cell[] row : map) {
             for (Cell column : row) {
@@ -64,6 +96,12 @@ public class Printer {
         }
         print_hyphens(map.length * 3);
 
-        sleep(0);
+        if (!game_result.isEmpty()) {
+            System.out.println(game_result);
+        }
+
+        print_asterisks(map.length * 7);
+
+        sleep(delay);
     }
 }

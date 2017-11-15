@@ -128,7 +128,7 @@ public class EES {
 
             }
 
-            System.out.println(cell1 + " " + cell2);
+            Printer.set_position_name(cell1 + " " + cell2);
             Printer.print(uncovered_map);
         }
 

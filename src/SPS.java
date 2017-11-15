@@ -94,7 +94,7 @@ public class SPS {
         for (int i = 0; i < uncovered_map.length; i++) {
             for (int j = 0; j < uncovered_map[0].length; j++) {
 
-                System.out.println(uncovered_map[i][j]);
+                Printer.set_position_name(uncovered_map[i][j].toString());
 
                 if (!uncovered_map[i][j].get_value().equals(Cell.UNCOVERED)) {
 

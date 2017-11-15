@@ -35,12 +35,22 @@ public enum EasyMap {
             {2, -1, 2, 0, 0},
             {3, -1, 3, 1, 0},
             {-1, 3, -1, 1, 0},
-    });
+    }),
+    NUM_NETTLES(5);
 
     private int[][] map;
+    private int num_nettles;
 
     EasyMap(int[][] map) {
         this.map = map;
+    }
+
+    EasyMap(int num_nettles) {
+        this.num_nettles = num_nettles;
+    }
+
+    public int get_int() {
+        return num_nettles;
     }
 
     private int[][] value() {
