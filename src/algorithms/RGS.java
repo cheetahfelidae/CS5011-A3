@@ -1,3 +1,9 @@
+package algorithms;
+
+import algorithms.others.Cell;
+import algorithms.others.Printer;
+import algorithms.others.Utility;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,7 +15,7 @@ public class RGS {
     private int[][] answer_map;
     private Cell[][] uncovered_map;
 
-    RGS(Cell[][] uncovered_map, int[][] answer_map) {
+    public RGS(Cell[][] uncovered_map, int[][] answer_map) {
         this.uncovered_map = uncovered_map;
         this.answer_map = answer_map;
     }

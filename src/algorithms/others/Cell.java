@@ -1,3 +1,5 @@
+package algorithms.others;
+
 public class Cell {
     public static final String UNCOVERED = "-";
     public static final String MARKED_NETTLE = "N";
@@ -9,7 +11,7 @@ public class Cell {
      */
     private String value;
 
-    Cell(int x, int y) {
+    public Cell(int x, int y) {
         this.x = x;
         this.y = y;
 

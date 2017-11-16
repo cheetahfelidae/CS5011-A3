@@ -1,3 +1,9 @@
+package algorithms;
+
+import algorithms.others.BorderingCell;
+import algorithms.others.Cell;
+import algorithms.others.Printer;
+import algorithms.others.Utility;
 import core.logic.propositional.inference.DPLLSatisfiable;
 import core.logic.propositional.parsing.PLParser;
 import core.logic.propositional.parsing.ast.Sentence;
@@ -8,7 +14,7 @@ public class DLS {
     private int[][] answer_map;
     private Cell[][] uncovered_map;
 
-    DLS(Cell[][] uncovered_map, int[][] answer_map) {
+    public DLS(Cell[][] uncovered_map, int[][] answer_map) {
         this.uncovered_map = uncovered_map;
         this.answer_map = answer_map;
     }
@@ -35,26 +41,26 @@ public class DLS {
      * @param uncovered_map
      * @return
      */
-    private ArrayList<BorderedCell> get_bordered_cells(Cell[][] uncovered_map) {
-        ArrayList<BorderedCell> bordered_cells = new ArrayList<>();
+    private ArrayList<BorderingCell> get_bordering_cells(Cell[][] uncovered_map) {
+        ArrayList<BorderingCell> bordering_cells = new ArrayList<>();
 
         for (Cell[] row : uncovered_map) {
             for (Cell column : row) {
                 ArrayList<Cell> uncovered_neighbours = Utility.find_uncovered_neighbours(column, uncovered_map, answer_map);
 
                 if (Utility.is_numeric(column.get_value()) && uncovered_neighbours.size() > 0) {
-                    bordered_cells.add(new BorderedCell(column, uncovered_neighbours, Utility.find_num_marked_nettle(column, uncovered_map, answer_map)));
+                    bordering_cells.add(new BorderingCell(column, uncovered_neighbours, Utility.find_num_marked_nettle(column, uncovered_map, answer_map)));
                 }
             }
         }
 
-        return bordered_cells;
+        return bordering_cells;
     }
 
-    private ArrayList<String> create_KBU(ArrayList<BorderedCell> bordered_cells) {
+    private ArrayList<String> create_KBU(ArrayList<BorderingCell> bordering_cells) {
         ArrayList<String> tokens = new ArrayList<>();
 
-        for (BorderedCell b_cell : bordered_cells) {
+        for (BorderingCell b_cell : bordering_cells) {
             ArrayList<Cell> b_neighbours = b_cell.get_uncovered_neighbours();
 
             if (b_neighbours.size() == 1) {
@@ -96,7 +102,7 @@ public class DLS {
     public void run() {
         Printer.set_algorithm(Printer.DPLL);
 
-        ArrayList<String> tokens = create_KBU(get_bordered_cells(uncovered_map));
+        ArrayList<String> tokens = create_KBU(get_bordering_cells(uncovered_map));
 
         String KBU = "";
         for (int i = 0; i < tokens.size(); i++) {

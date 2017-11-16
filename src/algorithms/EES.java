@@ -1,3 +1,10 @@
+package algorithms;
+
+import algorithms.others.BorderingPair;
+import algorithms.others.Cell;
+import algorithms.others.Printer;
+import algorithms.others.Utility;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -5,7 +12,7 @@ public class EES {
     private int[][] answer_map;
     private Cell[][] uncovered_map;
 
-    EES(Cell[][] uncovered_map, int[][] answer_map) {
+    public EES(Cell[][] uncovered_map, int[][] answer_map) {
         this.uncovered_map = uncovered_map;
         this.answer_map = answer_map;
     }
@@ -54,27 +61,27 @@ public class EES {
         return union;
     }
 
-    private ArrayList<BorderedPair> find_pair() {
-        ArrayList<Cell> bordered_cells = new ArrayList<>();
+    private ArrayList<BorderingPair> find_pair() {
+        ArrayList<Cell> bordering_cells = new ArrayList<>();
         for (int i = 0; i < uncovered_map.length; i++) {
             for (int j = 0; j < uncovered_map[0].length; j++) {
 
                 if (!uncovered_map[i][j].get_value().equals(Cell.UNCOVERED) && !uncovered_map[i][j].get_value().equals(Cell.MARKED_NETTLE)) {
                     if (Integer.parseInt(uncovered_map[i][j].get_value()) > 0) {
-                        bordered_cells.add(uncovered_map[i][j]);
+                        bordering_cells.add(uncovered_map[i][j]);
                     }
                 }
 
             }
         }
 
-        ArrayList<BorderedPair> pairs = new ArrayList<>();
-        for (int i = 0; i < bordered_cells.size(); i++) {
-            Cell cell1 = bordered_cells.get(i);
-            for (int j = i + 1; j < bordered_cells.size(); j++) {
-                Cell cell2 = bordered_cells.get(j);
+        ArrayList<BorderingPair> pairs = new ArrayList<>();
+        for (int i = 0; i < bordering_cells.size(); i++) {
+            Cell cell1 = bordering_cells.get(i);
+            for (int j = i + 1; j < bordering_cells.size(); j++) {
+                Cell cell2 = bordering_cells.get(j);
                 if (cell1.is_border(cell2)) {
-                    pairs.add(new BorderedPair(cell1, cell2));
+                    pairs.add(new BorderingPair(cell1, cell2));
                 }
             }
         }
@@ -105,10 +112,10 @@ public class EES {
     public void run() {
         Printer.set_algorithm(Printer.EES);
 
-        ArrayList<BorderedPair> pairs = find_pair();
-        Collections.reverse(pairs);// make the order of the bordered pairs running from the bottom to the top.
+        ArrayList<BorderingPair> pairs = find_pair();
+        Collections.reverse(pairs);// make the order of the bordering pairs running from the bottom to the top.
 
-        for (BorderedPair pair : pairs) {
+        for (BorderingPair pair : pairs) {
             Cell cell1 = pair.getCell1(), cell2 = pair.getCell2();
             ArrayList<Cell> uncovered_cells1 = Utility.find_uncovered_neighbours(cell1, uncovered_map, answer_map),
                     uncovered_cells2 = Utility.find_uncovered_neighbours(cell2, uncovered_map, answer_map);

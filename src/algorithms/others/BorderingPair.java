@@ -1,7 +1,9 @@
-public class BorderedPair {
+package algorithms.others;
+
+public class BorderingPair {
     private Cell cell1, cell2;
 
-    public BorderedPair(Cell cell1, Cell cell2) {
+    public BorderingPair(Cell cell1, Cell cell2) {
         this.cell1 = cell1;
         this.cell2 = cell2;
     }

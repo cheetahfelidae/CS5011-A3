@@ -1,8 +1,14 @@
+package algorithms;
+
+import algorithms.others.Cell;
+import algorithms.others.Printer;
+import algorithms.others.Utility;
+
 public class SPS {
     private int[][] answer_map;
     private Cell[][] uncovered_map;
 
-    SPS(Cell[][] uncovered_map, int[][] answer_map) {
+    public SPS(Cell[][] uncovered_map, int[][] answer_map) {
         this.uncovered_map = uncovered_map;
         this.answer_map = answer_map;
     }
@@ -18,6 +24,11 @@ public class SPS {
         return Utility.is_numeric(value) && Utility.find_num_marked_nettle(cell, uncovered_map, answer_map) == Integer.parseInt(value);
     }
 
+    /**
+     * Set a value to each cell's uncovered neighbour.
+     *
+     * @param cell
+     */
     private void uncover_neighbors(Cell cell) {
         int x = cell.get_x(), y = cell.get_y();
 
@@ -60,7 +71,7 @@ public class SPS {
     }
 
     /**
-     * Find uncovered cells and mark them a nettle.
+     * Mark a nettle to each the cell's uncovered neighbour
      *
      * @param cell
      */

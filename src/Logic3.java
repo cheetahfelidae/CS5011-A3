@@ -1,3 +1,7 @@
+import algorithms.*;
+import algorithms.others.Cell;
+import algorithms.others.Printer;
+import algorithms.others.Utility;
 import maps.EasyMap;
 import maps.HardMap;
 import maps.MediumMap;
@@ -20,7 +24,7 @@ public class Logic3 {
     private void run(int[][] answer_map) {
         Cell[][] uncovered_map = Utility.create_uncovered_map(answer_map);
 
-        SPS sps = new SPS(uncovered_map, answer_map);
+        SPS sps = new algorithms.SPS(uncovered_map, answer_map);
         sps.run();
 
         DLS dls = new DLS(uncovered_map, answer_map);

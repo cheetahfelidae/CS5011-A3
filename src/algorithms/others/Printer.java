@@ -1,3 +1,5 @@
+package algorithms.others;
+
 public class Printer {
     public static final String SPS = "Single Point Strategy";
     public static final String RGS = "Random Guess Strategy";

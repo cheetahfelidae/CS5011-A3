@@ -1,3 +1,7 @@
+import algorithms.*;
+import algorithms.others.Cell;
+import algorithms.others.Printer;
+import algorithms.others.Utility;
 import maps.EasyMap;
 import maps.HardMap;
 import maps.MediumMap;

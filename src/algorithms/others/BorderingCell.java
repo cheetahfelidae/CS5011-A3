@@ -1,11 +1,13 @@
+package algorithms.others;
+
 import java.util.ArrayList;
 
-public class BorderedCell {
+public class BorderingCell {
     private Cell cell;
     private ArrayList<Cell> uncovered_neighbours;
     private int num_marked_nettle;
 
-    BorderedCell(Cell cell, ArrayList<Cell> uncovered_neighbours, int num_marked_nettle) {
+    public BorderingCell(Cell cell, ArrayList<Cell> uncovered_neighbours, int num_marked_nettle) {
         this.cell = cell;
         this.uncovered_neighbours = uncovered_neighbours;
         this.num_marked_nettle = num_marked_nettle;
