@@ -54,13 +54,13 @@ public class RGS {
 
             if (answer_map[x][y] == -1) {
                 Printer.set_game_result(Printer.GAME_LOST);
-                Printer.print(uncovered_map);
+                Printer.render_map(uncovered_map);
                 break;
             } else if (i == uncovered.size() - 1) {
                 Printer.set_game_result(Printer.GAME_WON);
             }
 
-            Printer.print(uncovered_map);
+            Printer.render_map(uncovered_map);
         }
 
     }

@@ -118,7 +118,7 @@ public class SPS {
 
                 }
 
-                Printer.print(uncovered_map);
+                Printer.render_map(uncovered_map);
             }
         }
 

@@ -8,7 +8,7 @@ public class Printer {
     public static final String GAME_LOST = "Found a nettle: the game is over!!";
     public static final String GAME_WON = "All but marked-nettle cells are uncovered without finding a nettle: the agent wins the game!!";
 
-    private static int delay;
+    private static int frame_delay;
     private static String algorithm;
     private static int round = 1;
     private static String position_name;
@@ -16,7 +16,7 @@ public class Printer {
     private static String game_result = "";
 
     public static void set_frame_delay(int delay) {
-        Printer.delay = delay;
+        Printer.frame_delay = delay;
     }
 
     public static void set_algorithm(String algorithm) {
@@ -31,14 +31,14 @@ public class Printer {
         Printer.game_result = game_result;
     }
 
-    public static void print_hyphens(int num) {
+    private static void print_hyphens(int num) {
         for (int i = 0; i < num; i++) {
             System.out.print("-");
         }
         System.out.println();
     }
 
-    public static void print_asterisks(int num) {
+    private static void print_asterisks(int num) {
         for (int i = 0; i < num; i++) {
             System.out.print("*");
         }
@@ -48,7 +48,7 @@ public class Printer {
     /**
      * This method is used to clean screen to be able to render a motion.
      */
-    public static void clear_screen() {
+    private static void clear_screen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
@@ -58,7 +58,7 @@ public class Printer {
      *
      * @param millis the number of milli seconds of the thread sleep.
      */
-    public static void sleep(int millis) {
+    private static void sleep(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
@@ -74,7 +74,7 @@ public class Printer {
      *
      * @param map
      */
-    public static void print(Cell[][] map) {
+    public static void render_map(Cell[][] map) {
         final String space = " ";
 
         clear_screen();
@@ -104,6 +104,6 @@ public class Printer {
 
         print_asterisks(map.length * 7);
 
-        sleep(delay);
+        sleep(frame_delay);
     }
 }

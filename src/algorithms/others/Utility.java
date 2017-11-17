@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 public class Utility {
 
+    /**
+     * Get an initialised map with empty cell value (since the agent has no information about the map).
+     *
+     * @param answer_map
+     * @return
+     */
     public static Cell[][] create_uncovered_map(int[][] answer_map) {
         Cell[][] map = new Cell[answer_map.length][answer_map[0].length];
 

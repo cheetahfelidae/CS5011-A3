@@ -43,7 +43,7 @@ public class EES {
      * @return
      * @throws NumberFormatException
      */
-    public int diff(Cell cell1, Cell cell2) throws NumberFormatException {
+    private int diff(Cell cell1, Cell cell2) throws NumberFormatException {
         return Math.abs((Integer.parseInt(cell1.get_value()) - get_num_marked_nettle_neighbours(cell1))
                 - (Integer.parseInt(cell2.get_value()) - get_num_marked_nettle_neighbours(cell2)));
     }
@@ -63,12 +63,12 @@ public class EES {
 
     private ArrayList<BorderingPair> find_pair() {
         ArrayList<Cell> bordering_cells = new ArrayList<>();
-        for (int i = 0; i < uncovered_map.length; i++) {
-            for (int j = 0; j < uncovered_map[0].length; j++) {
+        for (Cell[] row : uncovered_map) {
+            for (Cell column : row) {
 
-                if (!uncovered_map[i][j].get_value().equals(Cell.UNCOVERED) && !uncovered_map[i][j].get_value().equals(Cell.MARKED_NETTLE)) {
-                    if (Integer.parseInt(uncovered_map[i][j].get_value()) > 0) {
-                        bordering_cells.add(uncovered_map[i][j]);
+                if (!column.get_value().equals(Cell.UNCOVERED) && !column.get_value().equals(Cell.MARKED_NETTLE)) {
+                    if (Integer.parseInt(column.get_value()) > 0) {
+                        bordering_cells.add(column);
                     }
                 }
 
@@ -96,9 +96,8 @@ public class EES {
         }
     }
 
-    private void mark_nettle_cells(ArrayList<Cell> cells) {
+    private void mark_nettle(ArrayList<Cell> cells) {
         for (Cell cell : cells) {
-            int x = cell.get_x(), y = cell.get_y();
             cell.set_value(Cell.MARKED_NETTLE);
         }
     }
@@ -124,19 +123,23 @@ public class EES {
                 ArrayList<Cell> intersection = find_subtraction(uncovered_cells1, uncovered_cells2);
 
                 if (intersection.size() > 0) {
-                    int diff = diff(cell1, cell2);
+                    try {
+                        int diff = diff(cell1, cell2);
 
-                    if (diff == 0) {
-                        uncover_cells(intersection);
-                    } else if (diff == intersection.size()) {
-                        mark_nettle_cells(intersection);
+                        if (diff == 0) {
+                            uncover_cells(intersection);
+                        } else if (diff == intersection.size()) {
+                            mark_nettle(intersection);
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Cell " + cell1 + " || " + cell2 + " : " + e.getMessage());
                     }
                 }
 
             }
 
             Printer.set_position_name(cell1 + " " + cell2);
-            Printer.print(uncovered_map);
+            Printer.render_map(uncovered_map);
         }
 
     }

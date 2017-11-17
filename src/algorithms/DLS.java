@@ -1,6 +1,5 @@
 package algorithms;
 
-import algorithms.others.BorderingCell;
 import algorithms.others.Cell;
 import algorithms.others.Printer;
 import algorithms.others.Utility;
@@ -23,12 +22,12 @@ public class DLS {
         System.out.println("ProveNettle " + p);
 
         String prove = KBU + " & ~" + p;
-        boolean ans = displayDPLLSatisfiableStatus(prove);
+        boolean ans = is_satisfied(prove);
 
         return !ans;
     }
 
-    private boolean displayDPLLSatisfiableStatus(String query) {
+    private boolean is_satisfied(String query) {
         PLParser parser = new PLParser();
         Sentence sent = parser.parse(query);
 
@@ -41,15 +40,18 @@ public class DLS {
      * @param uncovered_map
      * @return
      */
-    private ArrayList<BorderingCell> get_bordering_cells(Cell[][] uncovered_map) {
-        ArrayList<BorderingCell> bordering_cells = new ArrayList<>();
+    private ArrayList<Cell> get_bordering_cells(Cell[][] uncovered_map) {
+        ArrayList<Cell> bordering_cells = new ArrayList<>();
 
         for (Cell[] row : uncovered_map) {
             for (Cell column : row) {
                 ArrayList<Cell> uncovered_neighbours = Utility.find_uncovered_neighbours(column, uncovered_map, answer_map);
 
                 if (Utility.is_numeric(column.get_value()) && uncovered_neighbours.size() > 0) {
-                    bordering_cells.add(new BorderingCell(column, uncovered_neighbours, Utility.find_num_marked_nettle(column, uncovered_map, answer_map)));
+                    column.set_uncovered_neighbours(uncovered_neighbours);
+                    column.set_num_marked_nettle(Utility.find_num_marked_nettle(column, uncovered_map, answer_map));
+
+                    bordering_cells.add(column);
                 }
             }
         }
@@ -57,16 +59,16 @@ public class DLS {
         return bordering_cells;
     }
 
-    private ArrayList<String> create_KBU(ArrayList<BorderingCell> bordering_cells) {
+    private ArrayList<String> create_KBU(ArrayList<Cell> bordering_cells) {
         ArrayList<String> tokens = new ArrayList<>();
 
-        for (BorderingCell b_cell : bordering_cells) {
+        for (Cell b_cell : bordering_cells) {
             ArrayList<Cell> b_neighbours = b_cell.get_uncovered_neighbours();
 
             if (b_neighbours.size() == 1) {
                 String x0 = Integer.toString(b_neighbours.get(0).get_x()), y0 = Integer.toString(b_neighbours.get(0).get_y());
 
-                int num_not_found_nettle = Integer.parseInt(b_cell.get_cell().get_value()) - b_cell.get_num_marked_nettle();
+                int num_not_found_nettle = Integer.parseInt(b_cell.get_value()) - b_cell.get_num_marked_nettle();
 
                 String str = num_not_found_nettle == 0 ? String.format("N%s", x0 + y0) : String.format("(N%s | ~N%s)", x0 + y0, x0 + y0);
 

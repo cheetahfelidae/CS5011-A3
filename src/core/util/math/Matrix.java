@@ -1194,7 +1194,7 @@ public class Matrix implements Cloneable, java.io.Serializable {
 	}
 
 	/**
-	 * Read a matrix from a stream. The format is the same the print method, so
+	 * Read a matrix from a stream. The format is the same the render_map method, so
 	 * printed matrices can be read back in (provided they were printed using US
 	 * Locale). Elements are separated by whitespace, all the elements for each
 	 * row appear on a single line, the last row is followed by a blank line.
