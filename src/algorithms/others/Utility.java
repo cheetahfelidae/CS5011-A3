@@ -3,9 +3,11 @@ package algorithms.others;
 import java.util.ArrayList;
 
 public class Utility {
+    private static int NETTLE_VALUE = -1;
+
 
     /**
-     * Get an initialised map with empty cell value (since the agent has no information about the map).
+     * Get an initialised map with cov cell value (since the agent has no information about the map).
      *
      * @param answer_map
      * @return
@@ -85,7 +87,7 @@ public class Utility {
         return uncovered;
     }
 
-    public static int find_num_marked_nettle(Cell cell, Cell[][] uncovered_map, int[][] answer_map) {
+    public static int find_num_marked_nettles(Cell cell, Cell[][] uncovered_map, int[][] answer_map) {
         int count = 0;
         int x = cell.get_x(), y = cell.get_y();
 
@@ -99,5 +101,72 @@ public class Utility {
         }
 
         return count;
+    }
+
+    public static int find_num_marked_nettles(Cell[][] uncovered_map) {
+        int count = 0;
+
+        for (Cell[] row : uncovered_map) {
+            for (Cell column : row) {
+                if (column.get_value().equals(Cell.MARKED_NETTLE)) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    private static void uncover_all_but_nettles(Cell[][] uncovered_map, int[][] answer_map) {
+        for (Cell[] row : uncovered_map) {
+            for (Cell column : row) {
+                int x = column.get_x(), y = column.get_y();
+                if (column.get_value().equals(Cell.UNCOVERED)) {
+                    column.set_value(answer_map[x][y] == NETTLE_VALUE ? Cell.MARKED_NETTLE : Integer.toString(answer_map[x][y]));
+                }
+            }
+        }
+    }
+
+    private static int find_num_uncover_cells(Cell[][] uncovered_map) {
+        int count = 0;
+
+        for (Cell[] row : uncovered_map) {
+            for (Cell column : row) {
+                if (column.get_value().equals(Cell.UNCOVERED)) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    private static boolean find_nettle(Cell[][] uncovered_map) {
+        for (int i = 0; i < uncovered_map.length; i++) {
+            for (int j = 0; j < uncovered_map[0].length; j++) {
+                if (uncovered_map[i][j].get_value().equals(Integer.toString(NETTLE_VALUE))) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static void render_game_result(Cell[][] uncovered_map, int[][] answer_map, int num_nettles) {
+
+        if (Utility.find_num_marked_nettles(uncovered_map) == num_nettles - Utility.find_num_uncover_cells(uncovered_map)) {
+            Utility.uncover_all_but_nettles(uncovered_map, answer_map);
+            Printer.render_map(uncovered_map);
+            Printer.print_game_result(Printer.GAME_WON, uncovered_map.length);
+            System.exit(0);
+        } else if (find_nettle(uncovered_map)) {
+            Printer.render_map(uncovered_map);
+            Printer.print_game_result(Printer.GAME_LOST, uncovered_map.length);
+            System.exit(0);
+        }
+
+        Printer.render_map(uncovered_map);
     }
 }

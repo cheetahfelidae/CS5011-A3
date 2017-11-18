@@ -16,18 +16,23 @@ public class Logic3 {
      * - All Free Neighbours: uncover
      * - All Marked Neighbours: mark a nettle
      * 5. Repeat until no other change can be made
-     * 6. Use a DPLL to decide on the remaining cells
-     * 7. Repeat from the beginning
+     * 6. If all uncovered-nettle cells are marked, game win and exit the programme
+     * 7. If all uncovered-nettle cells can't be found, continue no. 8
+     * 8. Use a DPLL to decide on the remaining cells
+     * 9. Repeat from the beginning
      *
      * @param answer_map
+     * @param num_nettles
      */
-    private void run(int[][] answer_map) {
+    private void run(int[][] answer_map, int num_nettles) {
+        Printer.set_num_nettles(num_nettles);
+
         Cell[][] uncovered_map = Utility.create_uncovered_map(answer_map);
 
-        SPS sps = new algorithms.SPS(uncovered_map, answer_map);
+        SPS sps = new algorithms.SPS(uncovered_map, answer_map, num_nettles);
         sps.run();
 
-        DLS dls = new DLS(uncovered_map, answer_map);
+        DLS dls = new DLS(uncovered_map, answer_map, num_nettles);
         dls.run();
 
 //        RGS rgs = new RGS(uncovered_map, answer_map);
@@ -37,20 +42,23 @@ public class Logic3 {
     public static void main(String[] args) {
         try {
             Logic3 logic3 = new Logic3();
-            int level = Integer.parseInt(args[0]),
-                    map_no = Integer.parseInt(args[1]);
+            char level = args[0].charAt(0);
+            int map_no = Integer.parseInt(args[1]);
 
             Printer.set_frame_delay(Integer.parseInt(args[2]));
 
             switch (level) {
-                case 1:
-                    logic3.run(EasyMap.get_map(map_no));
+                case 'e':
+                case 'E':
+                    logic3.run(EasyMap.get_map(map_no), EasyMap.NUM_NETTLES.get_int());
                     break;
-                case 2:
-                    logic3.run(MediumMap.get_map(map_no));
+                case 'm' :
+                case 'M':
+                    logic3.run(MediumMap.get_map(map_no), MediumMap.NUM_NETTLES.get_int());
                     break;
-                case 3:
-                    logic3.run(HardMap.get_map(map_no));
+                case 'h' :
+                case 'H':
+                    logic3.run(HardMap.get_map(map_no), HardMap.NUM_NETTLES.get_int());
                     break;
                 default:
                     System.out.printf("MAP LEVEL %d NOT EXIST", level);

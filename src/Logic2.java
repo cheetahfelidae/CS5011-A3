@@ -18,47 +18,55 @@ public class Logic2 {
      * - All Free Neighbours: uncover
      * - All Marked Neighbours: mark a nettle
      * 5. Repeat until no other change can be made
-     * 6. Get all the frontiers
-     * 7. Compare pairs of bordering cells in the frontiers to uncover some new cells
-     * 8. Repeat from the beginning
-     * 9. then resort to random guess
+     * 6. If all uncovered-nettle cells are marked, game win and exit the programme
+     * 7. If all uncovered-nettle cells can't be found, continue no. 8
+     * 8. Get all the frontiers
+     * 9. Compare pairs of bordering cells in the frontiers to uncover some new cells
+     * 10. Repeat from the beginning
+     * 11. If all uncovered-nettle cells can't be found, then resort to random guess
      *
      * @param answer_map
+     * @param num_nettles
      */
-    private void run(int[][] answer_map) {
+    private void run(int[][] answer_map, int num_nettles) {
+        Printer.set_num_nettles(num_nettles);
+
         Cell[][] uncovered_map = Utility.create_uncovered_map(answer_map);
 
-        SPS sps = new SPS(uncovered_map, answer_map);
+        SPS sps = new SPS(uncovered_map, answer_map, num_nettles);
         sps.run();
 
-        EES ees = new EES(uncovered_map, answer_map);
+        EES ees = new EES(uncovered_map, answer_map, num_nettles);
         ees.run();
 
         sps.run();
 
         ees.run();
 
-        RGS rgs = new RGS(uncovered_map, answer_map);
-        rgs.run();
+        new RGS(uncovered_map, answer_map, num_nettles).run();
+
     }
 
     public static void main(String[] args) {
         try {
             Logic2 logic2 = new Logic2();
-            int level = Integer.parseInt(args[0]),
-                    map_no = Integer.parseInt(args[1]);
+            char level = args[0].charAt(0);
+            int map_no = Integer.parseInt(args[1]);
 
             Printer.set_frame_delay(Integer.parseInt(args[2]));
 
             switch (level) {
-                case 1:
-                    logic2.run(EasyMap.get_map(map_no));
+                case 'e':
+                case 'E':
+                    logic2.run(EasyMap.get_map(map_no), EasyMap.NUM_NETTLES.get_int());
                     break;
-                case 2:
-                    logic2.run(MediumMap.get_map(map_no));
+                case 'm' :
+                case 'M':
+                    logic2.run(MediumMap.get_map(map_no), MediumMap.NUM_NETTLES.get_int());
                     break;
-                case 3:
-                    logic2.run(HardMap.get_map(map_no));
+                case 'h' :
+                case 'H':
+                    logic2.run(HardMap.get_map(map_no), HardMap.NUM_NETTLES.get_int());
                     break;
                 default:
                     System.out.printf("MAP LEVEL %d NOT EXIST", level);

@@ -56,7 +56,7 @@ public enum MediumMap {
             {2, 3, 4, -1, 1, 0, 1, 1, 1},
             {1, -1, 2, 1, 1, 0, 0, 0, 0},
     }),
-    NUM_NETTLES(20);
+    NUM_NETTLES(10);
 
     private int[][] map;
     private int num_nettles;

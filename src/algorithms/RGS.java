@@ -14,10 +14,12 @@ import java.util.Collections;
 public class RGS {
     private int[][] answer_map;
     private Cell[][] uncovered_map;
+    private int num_nettles;
 
-    public RGS(Cell[][] uncovered_map, int[][] answer_map) {
+    public RGS(Cell[][] uncovered_map, int[][] answer_map, int num_nettles) {
         this.uncovered_map = uncovered_map;
         this.answer_map = answer_map;
+        this.num_nettles = num_nettles;
     }
 
     private Integer[] get_random(int size) {
@@ -52,16 +54,7 @@ public class RGS {
 
             Printer.set_position_name(String.format("(%d,%d)", x, y));
 
-            if (answer_map[x][y] == -1) {
-                Printer.set_game_result(Printer.GAME_LOST);
-                Printer.render_map(uncovered_map);
-                break;
-            } else if (i == uncovered.size() - 1) {
-                Printer.set_game_result(Printer.GAME_WON);
-            }
-
-            Printer.render_map(uncovered_map);
+            Utility.render_game_result(uncovered_map, answer_map, num_nettles);
         }
-
     }
 }

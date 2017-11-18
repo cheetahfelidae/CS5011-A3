@@ -61,7 +61,7 @@ public enum HardMap {
             {-1, 2, 2, 3, -1, 3, 2, 1, 1, 1},
             {1, 1, 0, 1, 2, -1, -1, 1, 1, -1},
     }),
-    NUM_NETTLES(10);
+    NUM_NETTLES(20);
 
     private int[][] map;
     private int num_nettles;

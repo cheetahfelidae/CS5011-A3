@@ -12,10 +12,12 @@ import java.util.ArrayList;
 public class DLS {
     private int[][] answer_map;
     private Cell[][] uncovered_map;
+    private int num_nettles;
 
-    public DLS(Cell[][] uncovered_map, int[][] answer_map) {
+    public DLS(Cell[][] uncovered_map, int[][] answer_map, int num_nettles) {
         this.uncovered_map = uncovered_map;
         this.answer_map = answer_map;
+        this.num_nettles = num_nettles;
     }
 
     private boolean has_nettle(String p, String KBU) {
@@ -49,7 +51,7 @@ public class DLS {
 
                 if (Utility.is_numeric(column.get_value()) && uncovered_neighbours.size() > 0) {
                     column.set_uncovered_neighbours(uncovered_neighbours);
-                    column.set_num_marked_nettle(Utility.find_num_marked_nettle(column, uncovered_map, answer_map));
+                    column.set_num_marked_nettle(Utility.find_num_marked_nettles(column, uncovered_map, answer_map));
 
                     bordering_cells.add(column);
                 }
@@ -125,5 +127,7 @@ public class DLS {
             }
             System.out.println();
         }
+
+        Utility.render_game_result(uncovered_map, answer_map, num_nettles);
     }
 }

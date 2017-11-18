@@ -6,14 +6,14 @@ public class Printer {
     public static final String EES = "Easy Equation Strategy";
     public static final String DPLL = "Davis-Putnam-Logemann-Loveland Algorithm";
     public static final String GAME_LOST = "Found a nettle: the game is over!!";
-    public static final String GAME_WON = "All but marked-nettle cells are uncovered without finding a nettle: the agent wins the game!!";
+    public static final String GAME_WON = "All nettles are marked: the game is won!!";
 
     private static int frame_delay;
     private static String algorithm;
+    private static int num_nettles;
     private static int round = 1;
     private static String position_name;
     private static int random_count = 1;
-    private static String game_result = "";
 
     public static void set_frame_delay(int delay) {
         Printer.frame_delay = delay;
@@ -23,12 +23,13 @@ public class Printer {
         Printer.algorithm = algorithm;
     }
 
-    public static void set_position_name(String position_name) {
-        Printer.position_name = position_name;
+    public static void set_num_nettles(int num_nettles) {
+        System.out.println(num_nettles);
+        Printer.num_nettles = num_nettles;
     }
 
-    public static void set_game_result(String game_result) {
-        Printer.game_result = game_result;
+    public static void set_position_name(String position_name) {
+        Printer.position_name = position_name;
     }
 
     private static void print_hyphens(int num) {
@@ -79,9 +80,10 @@ public class Printer {
 
         clear_screen();
 
-        print_asterisks(map.length * 7);
+        print_hyphens(map.length * 7);
 
         System.out.println("Algorithm: " + algorithm);
+        System.out.println("#Marked Nettles: " + Utility.find_num_marked_nettles(map) + "/" + num_nettles);
         System.out.println("Round: " + round++);
         System.out.println("Current Position: " + position_name);
         if (algorithm.equals(RGS)) {
@@ -98,12 +100,14 @@ public class Printer {
         }
         print_hyphens(map.length * 3);
 
-        if (!game_result.isEmpty()) {
-            System.out.println(game_result);
-        }
-
-        print_asterisks(map.length * 7);
-
         sleep(frame_delay);
+    }
+
+    public static void print_game_result(String result, int asterisks_length) {
+        print_asterisks(asterisks_length * 7);
+
+        System.out.println(result);
+
+        print_asterisks(asterisks_length * 7);
     }
 }

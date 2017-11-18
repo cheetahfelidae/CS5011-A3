@@ -7,21 +7,23 @@ import algorithms.others.Utility;
 public class SPS {
     private int[][] answer_map;
     private Cell[][] uncovered_map;
+    private int num_nettles;
 
-    public SPS(Cell[][] uncovered_map, int[][] answer_map) {
+    public SPS(Cell[][] uncovered_map, int[][] answer_map, int num_nettles) {
         this.uncovered_map = uncovered_map;
+        this.num_nettles = num_nettles;
         this.answer_map = answer_map;
     }
 
     /**
-     * All free neighbours (return true if the number of marked-nettle neighbour cells is the value of the current cell).
+     * All free neighbours (return true if the number of marked-nettle neighbours is the value of the current cell).
      *
      * @param cell
      * @return
      */
     private boolean all_free_neighbours(Cell cell) {
         String value = cell.get_value();
-        return Utility.is_numeric(value) && Utility.find_num_marked_nettle(cell, uncovered_map, answer_map) == Integer.parseInt(value);
+        return Utility.is_numeric(value) && Utility.find_num_marked_nettles(cell, uncovered_map, answer_map) == Integer.parseInt(value);
     }
 
     /**
@@ -43,8 +45,8 @@ public class SPS {
     }
 
     /**
-     * All marked neighbours (return true if the number of uncovered neighbour cells
-     * is the value of the current cell excluding the number of the marked nettle class).
+     * All marked neighbours (return true if the number of uncovered neighbours
+     * is the value of the current cell excluding the number of the marked nettle cells).
      *
      * @param cell
      * @return
@@ -71,7 +73,7 @@ public class SPS {
     }
 
     /**
-     * Mark a nettle to each the cell's uncovered neighbour
+     * Mark a nettle to each the cell's uncovered neighbour.
      *
      * @param cell
      */
@@ -102,25 +104,24 @@ public class SPS {
 
         uncovered_map[0][0].set_value(Integer.toString(answer_map[0][0]));
 
-        for (int i = 0; i < uncovered_map.length; i++) {
-            for (int j = 0; j < uncovered_map[0].length; j++) {
+        for (Cell[] row : uncovered_map) {
+            for (Cell column : row) {
 
-                Printer.set_position_name(uncovered_map[i][j].toString());
+                Printer.set_position_name(column.toString());
 
-                if (!uncovered_map[i][j].get_value().equals(Cell.UNCOVERED)) {
+                if (!column.get_value().equals(Cell.UNCOVERED)) {
 
-                    if (all_free_neighbours(uncovered_map[i][j])) {
-                        uncover_neighbors(uncovered_map[i][j]);
+                    if (all_free_neighbours(column)) {
+                        uncover_neighbors(column);
                     }
-                    if (all_marked_neighbours(uncovered_map[i][j])) {
-                        mark_nettle_neighbours(uncovered_map[i][j]);
+                    if (all_marked_neighbours(column)) {
+                        mark_nettle_neighbours(column);
                     }
 
                 }
 
-                Printer.render_map(uncovered_map);
+                Utility.render_game_result(uncovered_map, answer_map, num_nettles);
             }
         }
-
     }
 }

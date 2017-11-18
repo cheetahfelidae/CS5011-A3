@@ -11,10 +11,12 @@ import java.util.Collections;
 public class EES {
     private int[][] answer_map;
     private Cell[][] uncovered_map;
+    private int num_nettles;
 
-    public EES(Cell[][] uncovered_map, int[][] answer_map) {
+    public EES(Cell[][] uncovered_map, int[][] answer_map, int num_nettles) {
         this.uncovered_map = uncovered_map;
         this.answer_map = answer_map;
+        this.num_nettles = num_nettles;
     }
 
     private int get_num_marked_nettle_neighbours(Cell cell) {
@@ -104,9 +106,11 @@ public class EES {
 
     /**
      * If one set fully overlaps the other then proceed.
-     * if diff == 0, then sub = 0 ,and all si can be probed, they are all 0s, so clear!
+     * if diff == 0, then sub = 0, and all si can be probed, they are all 0s, so clear!
      * If diff == |S[k,j] \ S[x,y]|, then sub = |S[k,j] \ S[x,y]|, all si are 1, all nettles, mark!
      * otherwise abandon.
+     *
+     * @return
      */
     public void run() {
         Printer.set_algorithm(Printer.EES);
@@ -139,7 +143,8 @@ public class EES {
             }
 
             Printer.set_position_name(cell1 + " " + cell2);
-            Printer.render_map(uncovered_map);
+
+            Utility.render_game_result(uncovered_map, answer_map, num_nettles);
         }
 
     }
