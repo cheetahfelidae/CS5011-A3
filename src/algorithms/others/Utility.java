@@ -87,7 +87,7 @@ public class Utility {
         return uncovered;
     }
 
-    public static int find_num_marked_nettles(Cell cell, Cell[][] uncovered_map, int[][] answer_map) {
+    public static int find_num_marked_neighbours(Cell cell, Cell[][] uncovered_map, int[][] answer_map) {
         int count = 0;
         int x = cell.get_x(), y = cell.get_y();
 

@@ -23,7 +23,7 @@ public class SPS {
      */
     private boolean all_free_neighbours(Cell cell) {
         String value = cell.get_value();
-        return Utility.is_numeric(value) && Utility.find_num_marked_nettles(cell, uncovered_map, answer_map) == Integer.parseInt(value);
+        return Utility.is_numeric(value) && Utility.find_num_marked_neighbours(cell, uncovered_map, answer_map) == Integer.parseInt(value);
     }
 
     /**

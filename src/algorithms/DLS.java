@@ -8,6 +8,9 @@ import core.logic.propositional.parsing.PLParser;
 import core.logic.propositional.parsing.ast.Sentence;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DLS {
     private int[][] answer_map;
@@ -21,8 +24,6 @@ public class DLS {
     }
 
     private boolean has_nettle(String p, String KBU) {
-        System.out.println("ProveNettle " + p);
-
         String prove = KBU + " & ~" + p;
         boolean ans = is_satisfied(prove);
 
@@ -51,7 +52,7 @@ public class DLS {
 
                 if (Utility.is_numeric(column.get_value()) && uncovered_neighbours.size() > 0) {
                     column.set_uncovered_neighbours(uncovered_neighbours);
-                    column.set_num_marked_nettle(Utility.find_num_marked_nettles(column, uncovered_map, answer_map));
+                    column.set_num_marked_nettle(Utility.find_num_marked_neighbours(column, uncovered_map, answer_map));
 
                     bordering_cells.add(column);
                 }
@@ -61,11 +62,17 @@ public class DLS {
         return bordering_cells;
     }
 
-    private ArrayList<String> create_KBU(ArrayList<Cell> bordering_cells) {
+    private String create_KBU(ArrayList<Cell> bordering_cells) {
         ArrayList<String> tokens = new ArrayList<>();
 
         for (Cell b_cell : bordering_cells) {
             ArrayList<Cell> b_neighbours = b_cell.get_uncovered_neighbours();
+
+            int cell_value = 0;
+            if (Utility.is_numeric(b_cell.get_value())) {
+                cell_value = Integer.parseInt(b_cell.get_value());
+                cell_value -= Utility.find_num_marked_neighbours(b_cell, uncovered_map, answer_map);
+            }
 
             if (b_neighbours.size() == 1) {
                 String x0 = Integer.toString(b_neighbours.get(0).get_x()), y0 = Integer.toString(b_neighbours.get(0).get_y());
@@ -80,54 +87,120 @@ public class DLS {
                 String x0 = Integer.toString(b_neighbours.get(0).get_x()), y0 = Integer.toString(b_neighbours.get(0).get_y()),
                         x1 = Integer.toString(b_neighbours.get(1).get_x()), y1 = Integer.toString(b_neighbours.get(1).get_y());
 
-                tokens.add(String.format("((N%s & ~N%s) " +
+                String str = String.format("(" +
+                                "  ( N%s & ~N%s) " +
                                 "| (~N%s &  N%s))",
                         x0 + y0, x1 + y1,
-                        x0 + y0, x1 + y1));
+                        x0 + y0, x1 + y1);
+
+                tokens.add(str);
 
             } else if (b_neighbours.size() == 3) {
                 String x0 = Integer.toString(b_neighbours.get(0).get_x()), y0 = Integer.toString(b_neighbours.get(0).get_y()),
                         x1 = Integer.toString(b_neighbours.get(1).get_x()), y1 = Integer.toString(b_neighbours.get(1).get_y()),
                         x2 = Integer.toString(b_neighbours.get(2).get_x()), y2 = Integer.toString(b_neighbours.get(2).get_y());
 
-                tokens.add(String.format("((N%s & ~N%s & ~N%s) " +
-                                "| (~N%s &  N%s & ~N%s) " +
-                                "| (~N%s & ~N%s & N%s))",
-                        x0 + y0, x1 + y1, x2 + y2,
-                        x0 + y0, x1 + y1, x2 + y2,
-                        x0 + y0, x1 + y1, x2 + y2));
 
+                String str = "";
+
+
+                if (cell_value == 2) {
+                    str = String.format("(" +
+                                    "  ( N%s &  N%s & ~N%s) " +
+                                    "| (~N%s &  N%s &  N%s) " +
+                                    "| ( N%s & ~N%s &  N%s))",
+                            x0 + y0, x1 + y1, x2 + y2,
+                            x0 + y0, x1 + y1, x2 + y2,
+                            x0 + y0, x1 + y1, x2 + y2);
+                } else {
+                    str = String.format("(" +
+                                    "  ( N%s & ~N%s & ~N%s) " +
+                                    "| (~N%s &  N%s & ~N%s) " +
+                                    "| (~N%s & ~N%s &  N%s))",
+                            x0 + y0, x1 + y1, x2 + y2,
+                            x0 + y0, x1 + y1, x2 + y2,
+                            x0 + y0, x1 + y1, x2 + y2);
+                }
+
+                tokens.add(str);
+
+            } else if (b_neighbours.size() == 4) {
+                System.out.println("**************************** Implementation Needed ***************************************");
+
+            } else if (b_neighbours.size() == 5) {
+                String x0 = Integer.toString(b_neighbours.get(0).get_x()), y0 = Integer.toString(b_neighbours.get(0).get_y()),
+                        x1 = Integer.toString(b_neighbours.get(1).get_x()), y1 = Integer.toString(b_neighbours.get(1).get_y()),
+                        x2 = Integer.toString(b_neighbours.get(2).get_x()), y2 = Integer.toString(b_neighbours.get(2).get_y()),
+                        x3 = Integer.toString(b_neighbours.get(3).get_x()), y3 = Integer.toString(b_neighbours.get(3).get_y()),
+                        x4 = Integer.toString(b_neighbours.get(4).get_x()), y4 = Integer.toString(b_neighbours.get(4).get_y());
+
+                String str = String.format("(" +
+                                "  ( N%s & ~N%s & ~N%s & ~N%s & ~N%s) " +
+                                "| (~N%s &  N%s & ~N%s & ~N%s & ~N%s) " +
+                                "| (~N%s & ~N%s &  N%s & ~N%s & ~N%s) " +
+                                "| (~N%s & ~N%s & ~N%s &  N%s & ~N%s) " +
+                                "| (~N%s & ~N%s & ~N%s & ~N%s &  N%s))",
+                        x0 + y0, x1 + y1, x2 + y2, x3 + y3, x4 + y4,
+                        x0 + y0, x1 + y1, x2 + y2, x3 + y3, x4 + y4,
+                        x0 + y0, x1 + y1, x2 + y2, x3 + y3, x4 + y4,
+                        x0 + y0, x1 + y1, x2 + y2, x3 + y3, x4 + y4,
+                        x0 + y0, x1 + y1, x2 + y2, x3 + y3, x4 + y4);
+
+                tokens.add(str);
             }
+
+            System.out.println(tokens.get(tokens.size() - 1));
         }
-
-        return tokens;
-    }
-
-    public boolean run() {
-        Printer.set_algorithm(Printer.DPLL);
-
-        ArrayList<String> tokens = create_KBU(get_bordering_cells(uncovered_map));
 
         String KBU = "";
         for (int i = 0; i < tokens.size(); i++) {
             KBU += i == tokens.size() - 1 ? tokens.get(i) : tokens.get(i) + " & ";
         }
 
-        System.out.println(KBU);
-        System.out.println();
-        ArrayList<Cell> uncovered_cells = Utility.find_uncovered_cells(uncovered_map);
+        return KBU;
+    }
 
-        for (Cell cell : uncovered_cells) {
-            String x = Integer.toString(cell.get_x()), y = Integer.toString(cell.get_y());
+    private Set<Cell> get_neighbours_of_bordering_cells(ArrayList<Cell> bordering_cells) {
+        Set<Cell> neighbours = new HashSet<>();
 
-            if (has_nettle("N" + x + y, KBU)) {
-                System.out.println("Yes, Nettle, Mark");
-            } else {
-                System.out.println("No");
-            }
-            System.out.println();
+        for(Cell cell : bordering_cells) {
+            neighbours.addAll(cell.get_uncovered_neighbours());
         }
 
-        return Utility.is_game_over(uncovered_map, answer_map, num_nettles);
+        return neighbours;
+    }
+
+    /**
+     * @return
+     */
+    public boolean run() {
+        Printer.set_algorithm(Printer.DPLL);
+
+        ArrayList<Cell> bordering_cells = get_bordering_cells(uncovered_map);
+        String KBU = create_KBU(bordering_cells);
+
+        System.out.println();
+
+        for (Cell cell : get_neighbours_of_bordering_cells(bordering_cells)) {
+            Printer.set_position_name(cell.toString());
+
+            int x = cell.get_x(), y = cell.get_y();
+
+            if (has_nettle(String.format("N%d%d", x, y), KBU)) {
+                if (Integer.toString(answer_map[x][y]).equals("-1")) {
+                    cell.set_value(Cell.MARKED_NETTLE);
+                } else {
+                    cell.set_value("X");
+                }
+            } else {
+                cell.set_value(Integer.toString(answer_map[x][y]));
+            }
+
+            if (Utility.is_game_over(uncovered_map, answer_map, num_nettles)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
