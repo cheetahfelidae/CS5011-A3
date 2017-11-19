@@ -1,5 +1,7 @@
 package algorithms.others;
 
+import maps.EasyMap;
+
 public class Printer {
     public static final String SPS = "Single Point Strategy";
     public static final String RGS = "Random Guess Strategy";
@@ -9,6 +11,8 @@ public class Printer {
     public static final String GAME_WON = "All nettles are marked: the game is won!!";
 
     private static int frame_delay;
+    private static char game_level;
+    private static int map_number;
     private static String algorithm;
     private static int num_nettles;
     private static int round = 1;
@@ -16,7 +20,20 @@ public class Printer {
     private static int random_count = 1;
 
     public static void set_frame_delay(int delay) {
-        Printer.frame_delay = delay;
+        if (delay > 0) {
+            Printer.frame_delay = delay;
+        } else {
+            System.out.println("THE VALUE OF THE FRAME DELAY MUST BE A POSITIVE NUMBER");
+            throw new NumberFormatException();
+        }
+    }
+
+    public static void set_game_level(char game_level) {
+        Printer.game_level = game_level;
+    }
+
+    public static void set_map_number(int map_number) {
+        Printer.map_number = map_number;
     }
 
     public static void set_algorithm(String algorithm) {
@@ -84,6 +101,24 @@ public class Printer {
 
         print_hyphens(map.length * 7);
 
+        System.out.print("Level: ");
+        switch (game_level) {
+            case 'e':
+            case 'E':
+                System.out.println("Easy");
+                break;
+            case 'm':
+            case 'M':
+                System.out.println("Medium");
+                break;
+            case 'h':
+            case 'H':
+                System.out.println("Hard");
+                break;
+            default:
+                System.out.printf("MAP LEVEL %c NOT EXIST\n", game_level);
+        }
+        System.out.println("Map Number: " + map_number);
         System.out.println("Algorithm: " + algorithm);
         System.out.println("#Marked Nettles: " + Utility.find_num_marked_nettles(map) + "/" + num_nettles);
         System.out.println("Round: " + round++);

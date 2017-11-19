@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Utility {
     private static int NETTLE_VALUE = -1;
 
-
     /**
      * Get an initialised map with cov cell value (since the agent has no information about the map).
      *
