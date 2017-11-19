@@ -76,7 +76,9 @@ public class Printer {
      * @param map
      */
     public static void render_map(Cell[][] map) {
-        final String space = " ";
+        final String one_space = " ";
+        final String two_spaces = one_space + one_space;
+        final String three_spaces = one_space + two_spaces;
 
         clear_screen();
 
@@ -90,14 +92,26 @@ public class Printer {
             System.out.println("#Random: " + random_count++);
         }
 
+        print_hyphens(map.length * 7);
+
+        System.out.print(three_spaces);
+        for (int i = 0; i < map.length; i++) {
+            System.out.print(one_space + i + one_space);
+        }
+        System.out.println();
+        System.out.print(three_spaces);
         print_hyphens(map.length * 3);
-        for (Cell[] row : map) {
-            for (Cell column : row) {
-                String value = column.get_value();
-                System.out.print(value.length() == 2 ? value + space : space + value + space);
+
+        for (int i = 0; i < map.length; i++) {
+            System.out.print(i + two_spaces);
+            for (int j = 0; j < map[i].length; j++) {
+                String value = map[i][j].get_value();
+                System.out.print(value.length() == 2 ? value + one_space : one_space + value + one_space);
             }
             System.out.println();
         }
+
+        System.out.print(three_spaces);
         print_hyphens(map.length * 3);
 
         sleep(frame_delay);

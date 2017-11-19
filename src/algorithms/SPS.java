@@ -37,7 +37,7 @@ public class SPS {
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
                 if (Utility.is_legal_move(i, j, answer_map)
-                        && uncovered_map[i][j].get_value().equals(Cell.UNCOVERED)) {
+                        && uncovered_map[i][j].get_value().equals(Cell.COVERED)) {
                     uncovered_map[i][j].set_value(Integer.toString(answer_map[i][j]));
                 }
             }
@@ -46,7 +46,7 @@ public class SPS {
 
     /**
      * All marked neighbours (return true if the number of uncovered neighbours
-     * is the value of the current cell excluding the number of the marked nettle cells).
+     * is the value of the current cell minus the number of the marked nettle cells).
      *
      * @param cell
      * @return
@@ -58,7 +58,7 @@ public class SPS {
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
                 if (Utility.is_legal_move(i, j, answer_map)
-                        && uncovered_map[i][j].get_value().equals(Cell.UNCOVERED)) {
+                        && uncovered_map[i][j].get_value().equals(Cell.COVERED)) {
                     uncovered_cell_count++;
                 }
                 if (Utility.is_legal_move(i, j, answer_map)
@@ -83,11 +83,25 @@ public class SPS {
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
                 if (Utility.is_legal_move(i, j, answer_map)
-                        && uncovered_map[i][j].get_value().equals(Cell.UNCOVERED)) {
+                        && uncovered_map[i][j].get_value().equals(Cell.COVERED)) {
                     uncovered_map[i][j].set_value(Cell.MARKED_NETTLE);
                 }
             }
         }
+    }
+
+    private int find_num_uncovered_cells() {
+        int count = 0;
+
+        for (Cell[] row : uncovered_map) {
+            for (Cell column : row) {
+                if (column.get_value().equals(Cell.COVERED)) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
     }
 
     /**
@@ -97,30 +111,42 @@ public class SPS {
      * - All free neighbours, uncover.
      * - All marked neighbours, mark a nettle.
      * 4. Repeat until no other change can be made.
-     * 5. Then resort to random guess Random Guess Strategy(RGS).
      */
     public void run() {
         Printer.set_algorithm(Printer.SPS);
 
         uncovered_map[0][0].set_value(Integer.toString(answer_map[0][0]));
 
-        for (Cell[] row : uncovered_map) {
-            for (Cell column : row) {
+        int prev_num = 0;
 
-                Printer.set_position_name(column.toString());
+        while (true) {
 
-                if (!column.get_value().equals(Cell.UNCOVERED)) {
+            for (Cell[] row : uncovered_map) {
+                for (Cell column : row) {
 
-                    if (all_free_neighbours(column)) {
-                        uncover_neighbors(column);
+                    Printer.set_position_name(column.toString());
+
+                    if (!column.get_value().equals(Cell.COVERED)) {
+
+                        if (all_free_neighbours(column)) {
+                            uncover_neighbors(column);
+                        }
+                        if (all_marked_neighbours(column)) {
+                            mark_nettle_neighbours(column);
+                        }
+
                     }
-                    if (all_marked_neighbours(column)) {
-                        mark_nettle_neighbours(column);
-                    }
 
+                    Utility.render_game_result(uncovered_map, answer_map, num_nettles);
                 }
+            }
 
-                Utility.render_game_result(uncovered_map, answer_map, num_nettles);
+            // check if there is another change made
+            int new_num = find_num_uncovered_cells();
+            if (prev_num != new_num) {
+                prev_num = new_num;
+            } else {
+                break;
             }
         }
     }

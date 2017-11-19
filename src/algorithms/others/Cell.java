@@ -3,7 +3,7 @@ package algorithms.others;
 import java.util.ArrayList;
 
 public class Cell {
-    public static final String UNCOVERED = "-";
+    public static final String COVERED = "-";
     public static final String MARKED_NETTLE = "N";
 
     private int x, y;
@@ -18,7 +18,7 @@ public class Cell {
     public Cell(int x, int y) {
         this.x = x;
         this.y = y;
-        value = UNCOVERED;
+        value = COVERED;
         uncovered_neighbours = null;
         num_marked_nettle = 0;
     }

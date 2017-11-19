@@ -68,7 +68,7 @@ public class EES {
         for (Cell[] row : uncovered_map) {
             for (Cell column : row) {
 
-                if (!column.get_value().equals(Cell.UNCOVERED) && !column.get_value().equals(Cell.MARKED_NETTLE)) {
+                if (!column.get_value().equals(Cell.COVERED) && !column.get_value().equals(Cell.MARKED_NETTLE)) {
                     if (Integer.parseInt(column.get_value()) > 0) {
                         bordering_cells.add(column);
                     }

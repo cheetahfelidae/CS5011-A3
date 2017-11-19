@@ -40,7 +40,7 @@ public class Utility {
 
         for (Cell[] row : map) {
             for (Cell column : row) {
-                if (column.get_value().equals(Cell.UNCOVERED)) {
+                if (column.get_value().equals(Cell.COVERED)) {
                     uncovered.add(column);
                 }
             }
@@ -78,7 +78,7 @@ public class Utility {
             for (int j = y - 1; j <= y + 1; j++) {
                 if (Utility.is_legal_move(i, j, answer_map)
                         && !(i == x && j == y)
-                        && uncovered_map[i][j].get_value().equals(Cell.UNCOVERED)) {
+                        && uncovered_map[i][j].get_value().equals(Cell.COVERED)) {
                     uncovered.add(uncovered_map[i][j]);
                 }
             }
@@ -121,7 +121,7 @@ public class Utility {
         for (Cell[] row : uncovered_map) {
             for (Cell column : row) {
                 int x = column.get_x(), y = column.get_y();
-                if (column.get_value().equals(Cell.UNCOVERED)) {
+                if (column.get_value().equals(Cell.COVERED)) {
                     column.set_value(answer_map[x][y] == NETTLE_VALUE ? Cell.MARKED_NETTLE : Integer.toString(answer_map[x][y]));
                 }
             }
@@ -133,7 +133,7 @@ public class Utility {
 
         for (Cell[] row : uncovered_map) {
             for (Cell column : row) {
-                if (column.get_value().equals(Cell.UNCOVERED)) {
+                if (column.get_value().equals(Cell.COVERED)) {
                     count++;
                 }
             }
@@ -156,14 +156,14 @@ public class Utility {
 
     public static void render_game_result(Cell[][] uncovered_map, int[][] answer_map, int num_nettles) {
 
-        if (Utility.find_num_marked_nettles(uncovered_map) == num_nettles - Utility.find_num_uncover_cells(uncovered_map)) {
+        if (find_nettle(uncovered_map)) {
+            Printer.render_map(uncovered_map);
+            Printer.print_game_result(Printer.GAME_LOST, uncovered_map.length);
+            System.exit(0);
+        } else if (Utility.find_num_marked_nettles(uncovered_map) == num_nettles - Utility.find_num_uncover_cells(uncovered_map)) {
             Utility.uncover_all_but_nettles(uncovered_map, answer_map);
             Printer.render_map(uncovered_map);
             Printer.print_game_result(Printer.GAME_WON, uncovered_map.length);
-            System.exit(0);
-        } else if (find_nettle(uncovered_map)) {
-            Printer.render_map(uncovered_map);
-            Printer.print_game_result(Printer.GAME_LOST, uncovered_map.length);
             System.exit(0);
         }
 

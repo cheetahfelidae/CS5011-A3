@@ -90,6 +90,7 @@ public enum MediumMap {
             case 5:
                 return NWORLD5.value();
             default:
+                System.out.printf("MAP NO %d NOT EXIST\n", num);
         }
 
         return null;

@@ -69,7 +69,7 @@ public class Logic2 {
                     logic2.run(HardMap.get_map(map_no), HardMap.NUM_NETTLES.get_int());
                     break;
                 default:
-                    System.out.printf("MAP LEVEL %d NOT EXIST", level);
+                    System.out.printf("MAP LEVEL %d NOT EXIST\n", level);
             }
         } catch (Exception e) {
             System.out.println("usage: java Logic2 <level> <map_no> <delay>");
