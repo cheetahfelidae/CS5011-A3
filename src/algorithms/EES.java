@@ -105,14 +105,17 @@ public class EES {
     }
 
     /**
-     * If one set fully overlaps the other then proceed.
-     * if diff == 0, then sub = 0, and all si can be probed, they are all 0s, so clear!
-     * If diff == |S[k,j] \ S[x,y]|, then sub = |S[k,j] \ S[x,y]|, all si are 1, all nettles, mark!
-     * otherwise abandon.
+     * 1. Get all the frontiers.
+     * 2. Compare pairs of bordering cells in the frontiers to uncover some new cells.
+     * - If one set fully overlaps the other then proceed,
+     * -- If diff == 0, then sub = 0, and all si can be probed, they are all 0s, so clear!
+     * -- If diff == |S[k,j] \ S[x,y]|, then sub = |S[k,j] \ S[x,y]|, all si are 1, all nettles, mark!
+     * 3. If all nettle cells are marked, game is won and exit the programme.
+     * 4. otherwise abandon.
      *
-     * @return
+     * @return true if the game is over.
      */
-    public void run() {
+    public boolean run() {
         Printer.set_algorithm(Printer.EES);
 
         ArrayList<BorderingPair> pairs = find_pair();
@@ -144,9 +147,12 @@ public class EES {
 
             Printer.set_position_name(cell1 + " " + cell2);
 
-            Utility.render_game_result(uncovered_map, answer_map, num_nettles);
+            if (Utility.is_game_over(uncovered_map, answer_map, num_nettles)) {
+                return true;
+            }
         }
 
+        return false;
     }
 
 }

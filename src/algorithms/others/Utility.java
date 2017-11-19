@@ -154,19 +154,22 @@ public class Utility {
         return false;
     }
 
-    public static void render_game_result(Cell[][] uncovered_map, int[][] answer_map, int num_nettles) {
+    public static boolean is_game_over(Cell[][] uncovered_map, int[][] answer_map, int num_nettles) {
 
         if (find_nettle(uncovered_map)) {
             Printer.render_map(uncovered_map);
             Printer.print_game_result(Printer.GAME_LOST, uncovered_map.length);
-            System.exit(0);
+            return true;
+
         } else if (Utility.find_num_marked_nettles(uncovered_map) == num_nettles - Utility.find_num_uncover_cells(uncovered_map)) {
             Utility.uncover_all_but_nettles(uncovered_map, answer_map);
             Printer.render_map(uncovered_map);
             Printer.print_game_result(Printer.GAME_WON, uncovered_map.length);
-            System.exit(0);
+            return true;
         }
 
         Printer.render_map(uncovered_map);
+
+        return false;
     }
 }

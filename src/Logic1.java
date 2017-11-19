@@ -12,13 +12,9 @@ import maps.MediumMap;
 public class Logic1 {
 
     /**
-     * 1. Scan all cells one by one
-     * 2. For each cell that is covered, check its adjacent neighbours if the cell has:
-     * - All Free Neighbours: uncover
-     * - All Marked Neighbours: mark a nettle
-     * 3. Repeat until no other change can be made
-     * 4. If all uncovered-nettle cells are marked, game is won and exit the programme
-     * 5. If all uncovered-nettle cells can't be found, then resort to random guess RGS
+     * 1. Start with SPS.
+     * 2. If all nettle cells are marked, game is won and exit the programme.
+     * 3. If all nettle cells can't be found, then resort to random guess RGS.
      *
      * @param answer_map
      * @param num_nettles
@@ -28,11 +24,19 @@ public class Logic1 {
 
         Cell[][] uncovered_map = Utility.create_uncovered_map(answer_map);
 
-        new SPS(uncovered_map, answer_map, num_nettles).run();
+        if (new SPS(uncovered_map, answer_map, num_nettles).run()) {
+            return;
+        }
 
         new RGS(uncovered_map, answer_map, num_nettles).run();
     }
 
+    /**
+     * @param args three command-line arguments required which are
+     *             1. the desired level of difficulty of the map ('e' for Easy, 'm' for Medium and 'h' for Hard).
+     *             2. the map number (any number 1-5).
+     *             3. the frame delay for rendering each move of the agent (millisecond).
+     */
     public static void main(String[] args) {
         try {
             Logic1 logic1 = new Logic1();
@@ -46,11 +50,11 @@ public class Logic1 {
                 case 'E':
                     logic1.run(EasyMap.get_map(map_no), EasyMap.NUM_NETTLES.get_int());
                     break;
-                case 'm' :
+                case 'm':
                 case 'M':
                     logic1.run(MediumMap.get_map(map_no), MediumMap.NUM_NETTLES.get_int());
                     break;
-                case 'h' :
+                case 'h':
                 case 'H':
                     logic1.run(HardMap.get_map(map_no), HardMap.NUM_NETTLES.get_int());
                     break;

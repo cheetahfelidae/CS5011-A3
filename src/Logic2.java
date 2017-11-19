@@ -11,19 +11,11 @@ import maps.MediumMap;
  */
 public class Logic2 {
     /**
-     * 1. Start with SPS
-     * 2. Scan all cells one by one
-     * 3. For each cell that is covered check its adjacent neighbours
-     * 4. If the cell has:
-     * - All Free Neighbours: uncover
-     * - All Marked Neighbours: mark a nettle
-     * 5. Repeat until no other change can be made
-     * 6. If all uncovered-nettle cells are marked, game win and exit the programme
-     * 7. If all uncovered-nettle cells can't be found, continue no. 8
-     * 8. Get all the frontiers
-     * 9. Compare pairs of bordering cells in the frontiers to uncover some new cells
-     * 10. Repeat from the beginning
-     * 11. If all uncovered-nettle cells can't be found, then resort to random guess
+     * 1. Start with SPS.
+     * 2. If all nettle cells are marked, game win and exit the programme.
+     * 3. If all nettle cells can't be found, resort to the EES.
+     * 4. Repeat from the beginning.
+     * 5. If all uncovered-nettle cells can't be found, then resort to random guess.
      *
      * @param answer_map
      * @param num_nettles
@@ -34,19 +26,28 @@ public class Logic2 {
         Cell[][] uncovered_map = Utility.create_uncovered_map(answer_map);
 
         SPS sps = new SPS(uncovered_map, answer_map, num_nettles);
-        sps.run();
-
         EES ees = new EES(uncovered_map, answer_map, num_nettles);
-        ees.run();
 
-        sps.run();
+        for (int i = 0; i < 2; i++) {
+            if (sps.run()) {
+                return;
+            }
 
-        ees.run();
+            if (ees.run()) {
+                return;
+            }
+        }
 
         new RGS(uncovered_map, answer_map, num_nettles).run();
 
     }
 
+    /**
+     * @param args three command-line arguments required which are
+     *             1. the desired level of difficulty of the map ('e' for Easy, 'm' for Medium and 'h' for Hard).
+     *             2. the map number (any number 1-5).
+     *             3. the frame delay for rendering each move of the agent (millisecond).
+     */
     public static void main(String[] args) {
         try {
             Logic2 logic2 = new Logic2();
@@ -60,11 +61,11 @@ public class Logic2 {
                 case 'E':
                     logic2.run(EasyMap.get_map(map_no), EasyMap.NUM_NETTLES.get_int());
                     break;
-                case 'm' :
+                case 'm':
                 case 'M':
                     logic2.run(MediumMap.get_map(map_no), MediumMap.NUM_NETTLES.get_int());
                     break;
-                case 'h' :
+                case 'h':
                 case 'H':
                     logic2.run(HardMap.get_map(map_no), HardMap.NUM_NETTLES.get_int());
                     break;

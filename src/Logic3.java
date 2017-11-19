@@ -16,8 +16,8 @@ public class Logic3 {
      * - All Free Neighbours: uncover
      * - All Marked Neighbours: mark a nettle
      * 5. Repeat until no other change can be made
-     * 6. If all uncovered-nettle cells are marked, game win and exit the programme
-     * 7. If all uncovered-nettle cells can't be found, continue no. 8
+     * 6. If all nettle cells are marked, game win and exit the programme
+     * 7. If all nettle cells can't be found, continue no. 8
      * 8. Use a DPLL to decide on the remaining cells
      * 9. Repeat from the beginning
      *
@@ -30,15 +30,25 @@ public class Logic3 {
         Cell[][] uncovered_map = Utility.create_uncovered_map(answer_map);
 
         SPS sps = new algorithms.SPS(uncovered_map, answer_map, num_nettles);
-        sps.run();
+        if (sps.run()) {
+            return;
+        }
 
         DLS dls = new DLS(uncovered_map, answer_map, num_nettles);
-        dls.run();
+        if (dls.run()) {
+            return;
+        }
 
 //        RGS rgs = new RGS(uncovered_map, answer_map);
 //        rgs.run();
     }
 
+    /**
+     * @param args three command-line arguments required which are
+     *             1. the desired level of difficulty of the map ('e' for Easy, 'm' for Medium and 'h' for Hard).
+     *             2. the map number (any number 1-5).
+     *             3. the frame delay for rendering each move of the agent (millisecond).
+     */
     public static void main(String[] args) {
         try {
             Logic3 logic3 = new Logic3();
@@ -52,11 +62,11 @@ public class Logic3 {
                 case 'E':
                     logic3.run(EasyMap.get_map(map_no), EasyMap.NUM_NETTLES.get_int());
                     break;
-                case 'm' :
+                case 'm':
                 case 'M':
                     logic3.run(MediumMap.get_map(map_no), MediumMap.NUM_NETTLES.get_int());
                     break;
-                case 'h' :
+                case 'h':
                 case 'H':
                     logic3.run(HardMap.get_map(map_no), HardMap.NUM_NETTLES.get_int());
                     break;

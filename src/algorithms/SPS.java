@@ -110,9 +110,12 @@ public class SPS {
      * 3. If the cell has:
      * - All free neighbours, uncover.
      * - All marked neighbours, mark a nettle.
-     * 4. Repeat until no other change can be made.
+     * 4. If all nettle cells are marked, game is won and exit the programme.
+     * 5. If not, repeat until no other change can be made.
+     *
+     * @return true if the game is over.
      */
-    public void run() {
+    public boolean run() {
         Printer.set_algorithm(Printer.SPS);
 
         uncovered_map[0][0].set_value(Integer.toString(answer_map[0][0]));
@@ -137,7 +140,9 @@ public class SPS {
 
                     }
 
-                    Utility.render_game_result(uncovered_map, answer_map, num_nettles);
+                    if (Utility.is_game_over(uncovered_map, answer_map, num_nettles)) {
+                        return true;
+                    }
                 }
             }
 
@@ -149,5 +154,7 @@ public class SPS {
                 break;
             }
         }
+
+        return false;
     }
 }

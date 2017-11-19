@@ -34,13 +34,15 @@ public class RGS {
 
 
     /**
-     * Maintain a list of covered cells Pick a random one [x,y]
-     * Probe [x,y]
-     * if [x,y] is a nettle (= −1) - game over
-     * if [x,y] has value > −1 - continue
-     * Repeat until game won or lost
+     * 1. Maintain a list of covered cells Pick a random one [x,y]
+     * 2. Probe [x,y]
+     * - if [x,y] is a nettle (= −1) - game over
+     * - if [x,y] has value > −1 - continue
+     * 3. Repeat until game won or lost
+     *
+     * @return true if the game is over.
      */
-    public void run() {
+    public boolean run() {
         Printer.set_algorithm(Printer.RGS);
 
         ArrayList<Cell> uncovered = Utility.find_uncovered_cells(uncovered_map);
@@ -54,7 +56,11 @@ public class RGS {
 
             Printer.set_position_name(String.format("(%d,%d)", x, y));
 
-            Utility.render_game_result(uncovered_map, answer_map, num_nettles);
+            if (Utility.is_game_over(uncovered_map, answer_map, num_nettles)) {
+                return true;
+            }
         }
+
+        return false;
     }
 }

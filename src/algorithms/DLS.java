@@ -103,7 +103,7 @@ public class DLS {
         return tokens;
     }
 
-    public void run() {
+    public boolean run() {
         Printer.set_algorithm(Printer.DPLL);
 
         ArrayList<String> tokens = create_KBU(get_bordering_cells(uncovered_map));
@@ -128,6 +128,6 @@ public class DLS {
             System.out.println();
         }
 
-        Utility.render_game_result(uncovered_map, answer_map, num_nettles);
+        return Utility.is_game_over(uncovered_map, answer_map, num_nettles);
     }
 }
