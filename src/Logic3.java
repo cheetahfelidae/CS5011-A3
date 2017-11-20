@@ -10,15 +10,9 @@ public class Logic3 {
 
     /**
      * 1. Start with SPS
-     * 2. Scan all cells one by one
-     * 3. For each cell that is covered check its adjacent neighbours
-     * 4. If the cell has:
-     * - All Free Neighbours: uncover
-     * - All Marked Neighbours: mark a nettle
-     * 5. Repeat until no other change can be made
-     * 6. If all nettle cells are marked, game win and exit the programme
-     * 7. If all nettle cells can't be found, continue no. 8
-     * 8. Use a DPLL to decide on the remaining cells
+     * 2. If all nettle cells are marked, game win and exit the programme
+     * 3. If all nettle cells can't be found, continue no. 4
+     * 4. Use a DPLL to decide on the remaining cells
      * 9. Repeat from the beginning
      *
      * @param answer_map
@@ -30,14 +24,19 @@ public class Logic3 {
         Cell[][] uncovered_map = Utility.create_uncovered_map(answer_map);
 
         SPS sps = new algorithms.SPS(uncovered_map, answer_map, num_nettles);
-        if (sps.run()) {
-            return;
+        DLS dls = new DLS(uncovered_map, answer_map, num_nettles);
+
+        for (int i = 0; i < 2; i++) {
+            if (sps.run()) {
+                return;
+            }
+
+            if (dls.run()) {
+                return;
+            }
         }
 
-        DLS dls = new DLS(uncovered_map, answer_map, num_nettles);
-        if (dls.run()) {
-            return;
-        }
+        System.out.println("Num: " + (Utility.find_uncovered_cells(uncovered_map).size() - (num_nettles - Utility.find_num_marked_nettles(uncovered_map))));
 
 //        RGS rgs = new RGS(uncovered_map, answer_map);
 //        rgs.run();

@@ -49,7 +49,7 @@ public class Printer {
         Printer.position_name = position_name;
     }
 
-    private static void print_hyphens(int num) {
+    public static void print_hyphens(int num) {
         for (int i = 0; i < num; i++) {
             System.out.print("-");
         }

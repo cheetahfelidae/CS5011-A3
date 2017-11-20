@@ -171,4 +171,18 @@ public class Utility {
 
         return false;
     }
+
+    public static int find_num_uncovered_cells(Cell[][] uncovered_map) {
+        int count = 0;
+
+        for (Cell[] row : uncovered_map) {
+            for (Cell column : row) {
+                if (column.get_value().equals(Cell.COVERED)) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
 }

@@ -90,20 +90,6 @@ public class SPS {
         }
     }
 
-    private int find_num_uncovered_cells() {
-        int count = 0;
-
-        for (Cell[] row : uncovered_map) {
-            for (Cell column : row) {
-                if (column.get_value().equals(Cell.COVERED)) {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
-
     /**
      * 1. Scan all cells one by one.
      * 2. For each cell that is covered, check its adjacent neighbours.
@@ -147,7 +133,7 @@ public class SPS {
             }
 
             // check if there is another change made
-            int new_num = find_num_uncovered_cells();
+            int new_num = Utility.find_num_uncovered_cells(uncovered_map);
             if (prev_num != new_num) {
                 prev_num = new_num;
             } else {

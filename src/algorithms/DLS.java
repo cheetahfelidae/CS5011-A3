@@ -3,6 +3,7 @@ package algorithms;
 import algorithms.others.Cell;
 import algorithms.others.Printer;
 import algorithms.others.Utility;
+import com.sun.deploy.pings.Pings;
 import core.logic.propositional.inference.DPLLSatisfiable;
 import core.logic.propositional.parsing.PLParser;
 import core.logic.propositional.parsing.ast.Sentence;
@@ -87,8 +88,7 @@ public class DLS {
                 String x0 = Integer.toString(b_neighbours.get(0).get_x()), y0 = Integer.toString(b_neighbours.get(0).get_y()),
                         x1 = Integer.toString(b_neighbours.get(1).get_x()), y1 = Integer.toString(b_neighbours.get(1).get_y());
 
-                String str = String.format("(" +
-                                "  ( N%s & ~N%s) " +
+                String str = String.format("(( N%s & ~N%s) " +
                                 "| (~N%s &  N%s))",
                         x0 + y0, x1 + y1,
                         x0 + y0, x1 + y1);
@@ -105,16 +105,14 @@ public class DLS {
 
 
                 if (cell_value == 2) {
-                    str = String.format("(" +
-                                    "  ( N%s &  N%s & ~N%s) " +
+                    str = String.format("(( N%s &  N%s & ~N%s) " +
                                     "| (~N%s &  N%s &  N%s) " +
                                     "| ( N%s & ~N%s &  N%s))",
                             x0 + y0, x1 + y1, x2 + y2,
                             x0 + y0, x1 + y1, x2 + y2,
                             x0 + y0, x1 + y1, x2 + y2);
                 } else {
-                    str = String.format("(" +
-                                    "  ( N%s & ~N%s & ~N%s) " +
+                    str = String.format("(( N%s & ~N%s & ~N%s) " +
                                     "| (~N%s &  N%s & ~N%s) " +
                                     "| (~N%s & ~N%s &  N%s))",
                             x0 + y0, x1 + y1, x2 + y2,
@@ -134,8 +132,7 @@ public class DLS {
                         x3 = Integer.toString(b_neighbours.get(3).get_x()), y3 = Integer.toString(b_neighbours.get(3).get_y()),
                         x4 = Integer.toString(b_neighbours.get(4).get_x()), y4 = Integer.toString(b_neighbours.get(4).get_y());
 
-                String str = String.format("(" +
-                                "  ( N%s & ~N%s & ~N%s & ~N%s & ~N%s) " +
+                String str = String.format("(( N%s & ~N%s & ~N%s & ~N%s & ~N%s) " +
                                 "| (~N%s &  N%s & ~N%s & ~N%s & ~N%s) " +
                                 "| (~N%s & ~N%s &  N%s & ~N%s & ~N%s) " +
                                 "| (~N%s & ~N%s & ~N%s &  N%s & ~N%s) " +
@@ -148,14 +145,19 @@ public class DLS {
 
                 tokens.add(str);
             }
-
-            System.out.println(tokens.get(tokens.size() - 1));
         }
 
+        System.out.println();
+        Printer.print_hyphens(uncovered_map.length * 7);
+        System.out.println("KBU : ");
         String KBU = "";
         for (int i = 0; i < tokens.size(); i++) {
-            KBU += i == tokens.size() - 1 ? tokens.get(i) : tokens.get(i) + " & ";
+            String str = i == tokens.size() - 1 ? tokens.get(i) : tokens.get(i) + " & ";
+            System.out.println(str);
+
+            KBU += str;
         }
+        Printer.print_hyphens(uncovered_map.length * 7);
 
         return KBU;
     }
@@ -163,7 +165,7 @@ public class DLS {
     private Set<Cell> get_neighbours_of_bordering_cells(ArrayList<Cell> bordering_cells) {
         Set<Cell> neighbours = new HashSet<>();
 
-        for(Cell cell : bordering_cells) {
+        for (Cell cell : bordering_cells) {
             neighbours.addAll(cell.get_uncovered_neighbours());
         }
 
@@ -178,8 +180,6 @@ public class DLS {
 
         ArrayList<Cell> bordering_cells = get_bordering_cells(uncovered_map);
         String KBU = create_KBU(bordering_cells);
-
-        System.out.println();
 
         for (Cell cell : get_neighbours_of_bordering_cells(bordering_cells)) {
             Printer.set_position_name(cell.toString());
