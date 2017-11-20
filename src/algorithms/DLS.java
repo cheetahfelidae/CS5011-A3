@@ -31,6 +31,13 @@ public class DLS {
         return !ans;
     }
 
+    private boolean no_nettle(String p, String KBU) {
+        String prove = KBU + " & " + p;
+        boolean ans = is_satisfied(prove);
+
+        return !ans;
+    }
+
     private boolean is_satisfied(String query) {
         PLParser parser = new PLParser();
         Sentence sent = parser.parse(query);
@@ -192,7 +199,7 @@ public class DLS {
                 } else {
                     cell.set_value("X");
                 }
-            } else {
+            } else if (no_nettle(String.format("N%d%d", x, y), KBU)) {
                 cell.set_value(Integer.toString(answer_map[x][y]));
             }
 
