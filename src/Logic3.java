@@ -13,7 +13,7 @@ public class Logic3 {
      * 2. If all nettle cells are marked, game win and exit the programme
      * 3. If all nettle cells can't be found, continue no. 4
      * 4. Use a DPLL to decide on the remaining cells
-     * 9. Repeat from the beginning
+     * 5. Repeat from the beginning
      *
      * @param answer_map
      * @param num_nettles
@@ -36,10 +36,11 @@ public class Logic3 {
             }
         }
 
-        System.out.println("Num: " + (Utility.find_uncovered_cells(uncovered_map).size() - (num_nettles - Utility.find_num_marked_nettles(uncovered_map))));
+        Printer.print_hyphens(uncovered_map.length * 7);
+        System.out.println("#Random guessing: " + (Utility.find_uncovered_cells(uncovered_map).size() - (num_nettles - Utility.find_num_marked_nettles(uncovered_map))));
+        Printer.print_hyphens(uncovered_map.length * 7);
 
-//        RGS rgs = new RGS(uncovered_map, answer_map);
-//        rgs.run();
+        new RGS(uncovered_map, answer_map, num_nettles).run();
     }
 
     /**

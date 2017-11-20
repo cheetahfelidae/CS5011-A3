@@ -28,6 +28,10 @@ public class Logic1 {
             return;
         }
 
+        Printer.print_hyphens(uncovered_map.length * 7);
+        System.out.println("#Random guessing: " + (Utility.find_uncovered_cells(uncovered_map).size() - (num_nettles - Utility.find_num_marked_nettles(uncovered_map))));
+        Printer.print_hyphens(uncovered_map.length * 7);
+
         new RGS(uncovered_map, answer_map, num_nettles).run();
     }
 

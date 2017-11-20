@@ -24,6 +24,13 @@ public class DLS {
         this.num_nettles = num_nettles;
     }
 
+    /**
+     * prove that there is a nettle in [x,y].
+     *
+     * @param p
+     * @param KBU
+     * @return
+     */
     private boolean has_nettle(String p, String KBU) {
         String prove = KBU + " & ~" + p;
         boolean ans = is_satisfied(prove);
@@ -31,6 +38,13 @@ public class DLS {
         return !ans;
     }
 
+    /**
+     * prove that the cell is clear in [x,y].
+     *
+     * @param p
+     * @param KBU
+     * @return
+     */
     private boolean no_nettle(String p, String KBU) {
         String prove = KBU + " & " + p;
         boolean ans = is_satisfied(prove);
@@ -154,17 +168,10 @@ public class DLS {
             }
         }
 
-        System.out.println();
-        Printer.print_hyphens(uncovered_map.length * 7);
-        System.out.println("KBU : ");
         String KBU = "";
         for (int i = 0; i < tokens.size(); i++) {
-            String str = i == tokens.size() - 1 ? tokens.get(i) : tokens.get(i) + " & ";
-            System.out.println(str);
-
-            KBU += str;
+            KBU += i == tokens.size() - 1 ? tokens.get(i) : tokens.get(i) + " & ";
         }
-        Printer.print_hyphens(uncovered_map.length * 7);
 
         return KBU;
     }
@@ -180,12 +187,21 @@ public class DLS {
     }
 
     /**
+     * 1. Scans each neighbour of each bordering cell to construct KBU sentence.
+     * 2. All KBU sentences constructed will be grouped in one long sentence.
+     * 3. Afterwards, the agent will use the KBU sentence to check:
+     * - if each of the neighbours of the bordering cells has a hidden nettle, then the cell will be marked.
+     * - If not, then the cell will be checked if the cell is clear, if yes, then the cell will be uncovered.
+     * - If not, the agent then ignore the cell.
+     * 4. Repeat the process above until there is no another neighbour of the bordering cells.
+     *
      * @return
      */
     public boolean run() {
         Printer.set_algorithm(Printer.DPLL);
 
         ArrayList<Cell> bordering_cells = get_bordering_cells(uncovered_map);
+
         String KBU = create_KBU(bordering_cells);
 
         for (Cell cell : get_neighbours_of_bordering_cells(bordering_cells)) {
@@ -194,11 +210,7 @@ public class DLS {
             int x = cell.get_x(), y = cell.get_y();
 
             if (has_nettle(String.format("N%d%d", x, y), KBU)) {
-                if (Integer.toString(answer_map[x][y]).equals("-1")) {
-                    cell.set_value(Cell.MARKED_NETTLE);
-                } else {
-                    cell.set_value("X");
-                }
+                cell.set_value(Cell.MARKED_NETTLE);
             } else if (no_nettle(String.format("N%d%d", x, y), KBU)) {
                 cell.set_value(Integer.toString(answer_map[x][y]));
             }
